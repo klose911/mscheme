@@ -12,7 +12,7 @@ public class SContext {
 
     public SContext(SContext parent) {
         this.parent = parent;
-        this.envMap = new LinkedHashMap<String, SObject>();
+        this.envMap = new LinkedHashMap<>();
     }
 
     public SObject find(String name) {
