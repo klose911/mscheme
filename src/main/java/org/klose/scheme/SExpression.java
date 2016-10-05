@@ -5,21 +5,21 @@ import java.util.List;
 
 public class SExpression {
 
-    private String value;
+    private String str;
     private List<SExpression> children = new LinkedList<>();
     private SExpression parent;
 
-    public SExpression(String value, SExpression parent) {
-        this.value = value;
+    public SExpression(String str, SExpression parent) {
+        this.str = str;
         this.parent = parent;
     }
 
-    public String getValue() {
-        return value;
+    public String getStr() {
+        return str;
     }
 
-    public void setValue(String value) {
-        this.value = value;
+    public void setStr(String str) {
+        this.str = str;
     }
 
     public List<SExpression> getChildren() {
@@ -40,22 +40,23 @@ public class SExpression {
 
     @Override
     public String toString() {
-        if (!children.isEmpty()) {
+        if(str.equals("")) {
             StringBuilder builder = new StringBuilder();
-            builder.append("\n");
-            for (SExpression e : children)
-                builder.append(e).append(" ");
+            builder.append("(");
+            for(SExpression child: children)
+                builder.append(" ").append(child).append(" ");
+            builder.append(")");
             return builder.toString();
         } else
-            return value;
-
+            return str;
     }
 
     //@TODO
-    public  SObject evalute(SContext context) {
-        if(Utils.isInteger(value))
-            return new SNumber(Long.valueOf(value));
+    public SObject evalute(SContext context) {
+        if (Utils.isInteger(str))
+            return new SNumber(Long.valueOf(str));
         else
             return null;
     }
+
 }
