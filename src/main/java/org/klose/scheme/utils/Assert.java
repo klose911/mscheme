@@ -10,7 +10,7 @@ import java.util.Collection;
 import java.util.Map;
 
 public abstract class Assert {
-	//TODO add: isNumber,isInteger,isDate
+	//TODO add: isNumber,isLong,isDate
 	/**
 	 * Assert a boolean expression, throwing <code>IllegalArgumentException</code>
 	 * if the test result is <code>false</code>.

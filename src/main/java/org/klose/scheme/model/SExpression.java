@@ -1,4 +1,6 @@
-package org.klose.scheme;
+package org.klose.scheme.model;
+
+import org.klose.scheme.utils.Utils;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -53,8 +55,8 @@ public class SExpression {
 
     //@TODO
     public SObject evalute(SContext context) {
-        if (Utils.isInteger(str))
-            return new SNumber(Long.valueOf(str));
+        if (Utils.isLong(str))
+            return new SLong(Long.valueOf(str));
         else
             return null;
     }

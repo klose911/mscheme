@@ -1,4 +1,4 @@
-package org.klose.scheme;
+package org.klose.scheme.model;
 
 
 public class SBoolean extends SObject{
@@ -17,4 +17,10 @@ public class SBoolean extends SObject{
         this.value = value;
     }
 
+    @Override
+    public String toString() {
+        return "SBoolean{" +
+                "value=" + value +
+                '}';
+    }
 }

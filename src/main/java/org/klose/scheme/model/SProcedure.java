@@ -1,4 +1,4 @@
-package org.klose.scheme;
+package org.klose.scheme.model;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -16,7 +16,7 @@ public abstract class SProcedure extends SObject {
         this.context = context;
     }
 
-    public SObject evalute() {
+    public SObject apply() {
         if (isPartial())
             return this;
         else
@@ -36,5 +36,12 @@ public abstract class SProcedure extends SObject {
         return computeFilledParameters().size() < parameters.size();
     }
 
-
+    @Override
+    public String toString() {
+        return "SProcedure{" +
+                "body=" + body +
+                ", parameters=" + parameters +
+                ", context=" + context +
+                '}';
+    }
 }

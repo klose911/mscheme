@@ -1,4 +1,4 @@
-package org.klose.scheme;
+package org.klose.scheme.model;
 
 import java.util.List;
 

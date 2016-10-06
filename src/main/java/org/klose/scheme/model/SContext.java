@@ -1,14 +1,11 @@
-package org.klose.scheme;
+package org.klose.scheme.model;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.function.BiFunction;
 
 public class SContext {
     private SContext parent;
     private Map<String, SObject> envMap;
-
-    private Map<String, BiFunction<SExpression[], SContext, SObject>> builtinProcedureMap;
 
     public SContext(SContext parent) {
         this.parent = parent;

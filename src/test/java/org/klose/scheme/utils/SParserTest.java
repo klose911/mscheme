@@ -1,9 +1,8 @@
-package org.klose.scheme.util;
+package org.klose.scheme.utils;
 
 import junit.framework.Assert;
 import org.junit.Test;
-import org.klose.scheme.SExpression;
-import org.klose.scheme.SParser;
+import org.klose.scheme.model.SExpression;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -11,7 +10,7 @@ import java.util.List;
 
 public class SParserTest {
     private final static Logger logger = LoggerFactory.getLogger(SParserTest.class);
-    private final String STATEMENT = "( def x (if  \r\n ( > a 1   ) 1 2 ) )";
+    private final String STATEMENT = "( def x (if  \r\n ( > a 1   ) 1 2.4 ) )";
     @Test
     public void testTokenize() {
         logger.info(STATEMENT);

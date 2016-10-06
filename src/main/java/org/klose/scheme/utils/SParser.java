@@ -1,6 +1,6 @@
-package org.klose.scheme;
+package org.klose.scheme.utils;
 
-import org.klose.scheme.utils.Assert;
+import org.klose.scheme.model.SExpression;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
