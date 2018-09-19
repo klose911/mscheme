@@ -1,47 +1,28 @@
 package org.klose.scheme.model;
 
-import java.util.LinkedList;
 import java.util.List;
 
-public abstract class SProcedure extends SObject {
+public class SProcedure {
 
-    private SExpression body;
-    private List<String> parameters;
-    private SContext context;
+    private final SExpression body;
+    private final List<String> parameters;
+    private final SEnvironment context;
 
-
-    public SProcedure(SExpression body, List<String> parameters, SContext context) {
+    public SProcedure(SExpression body, List<String> parameters, SEnvironment context) {
         this.body = body;
         this.parameters = parameters;
         this.context = context;
     }
 
-    public SObject apply() {
-        if (isPartial())
-            return this;
-        else
-            return body.evalute(context);
+    public SExpression getBody() {
+        return body;
     }
 
-    private List<String> computeFilledParameters() {
-        List<String> computed = new LinkedList<>();
-        for (String para : parameters) {
-            if (context.find(para) != null)
-                computed.add(para);
-        }
-        return computed;
+    public List<String> getParameters() {
+        return parameters;
     }
 
-    private Boolean isPartial() {
-        return computeFilledParameters().size() < parameters.size();
-    }
-
-    @Override
-    public String toString() {
-        return "SProcedure{" +
-                "body=" + body +
-                ", parameters=" + parameters +
-                ", context=" + context +
-                '}';
+    public SEnvironment getContext() {
+        return context;
     }
 }

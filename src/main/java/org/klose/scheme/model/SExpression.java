@@ -1,14 +1,11 @@
 package org.klose.scheme.model;
 
-import org.klose.scheme.utils.Utils;
-
-import java.util.LinkedList;
 import java.util.List;
 
 public class SExpression {
 
     private String str;
-    private List<SExpression> children = new LinkedList<>();
+    private List<SExpression> children;
     private SExpression parent;
 
     public SExpression(String str, SExpression parent) {
@@ -42,23 +39,14 @@ public class SExpression {
 
     @Override
     public String toString() {
-        if(str.equals("")) {
+        if (str.equals("")) {
             StringBuilder builder = new StringBuilder();
             builder.append("(");
-            for(SExpression child: children)
+            for (SExpression child : children)
                 builder.append(" ").append(child).append(" ");
             builder.append(")");
             return builder.toString();
         } else
             return str;
     }
-
-    //@TODO
-    public SObject evalute(SContext context) {
-        if (Utils.isLong(str))
-            return new SLong(Long.valueOf(str));
-        else
-            return null;
-    }
-
 }

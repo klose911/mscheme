@@ -15,7 +15,6 @@ public class SParser {
     private final static Logger logger = LoggerFactory.getLogger(SParser.class);
 
     public static List<String> tokenize(String text) {
-        Assert.isNotNull(text);
         logger.info("start tokenize input");
         logger.debug("[input statement : {} ]", text);
         List<String> tokens = new LinkedList<>();
@@ -30,7 +29,6 @@ public class SParser {
     }
 
     public static SExpression parse(String code) {
-        Assert.isNotNull(code);
         logger.info("start parser s-expression");
         logger.debug("[s-expression : {}", code);
 
@@ -55,7 +53,6 @@ public class SParser {
     }
 
     public static String joinTokens(List<String> lexes) {
-        Assert.isNotNull(lexes);
         StringBuilder builder = new StringBuilder();
         builder.append("[");
         for (String l : lexes)
