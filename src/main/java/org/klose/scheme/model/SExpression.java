@@ -46,13 +46,13 @@ public class SExpression extends SObject {
     public String toString() {
         StringBuilder builder = new StringBuilder();
         if (children.isEmpty())
-            builder.append("'").append(str).append("'");
+            builder.append(str);
         else {
-            builder.append("[");
+            builder.append("(");
             builder.append(children.stream()
                     .map(SExpression::toString)
-                    .collect(joining(",")));
-            builder.append("]");
+                    .collect(joining(" ")));
+            builder.append(")");
         }
         return builder.toString();
     }

@@ -1,7 +1,9 @@
 package org.klose.scheme.type;
 
 
-public class SObject {
+import java.io.Serializable;
+
+public class SObject implements Serializable {
     protected String str;
 
     public String getStr() {

@@ -7,18 +7,15 @@ import org.klose.scheme.utils.SNumberUtils;
 public class AddFunc {
     public static SNumber add(SObject... args) {
         Number result;
-        SNumber[] args1 = new SNumber[args.length];
-        for(int i = 0; i<args.length; i++) {
-            args1[i] = (SNumber) args[i];
-        }
-        if (SNumberUtils.hasDouble(args1)) {
-            result = addDouble(args1);
-        } else if (SNumberUtils.hasFloat(args1)) {
-            result = addFloat(args1);
-        } else if (SNumberUtils.hasLong(args1)) {
-            result = addLong(args1);
+        SNumber[] numbers = SNumberUtils.convert(args);
+        if (SNumberUtils.hasDouble(numbers)) {
+            result = addDouble(numbers);
+        } else if (SNumberUtils.hasFloat(numbers)) {
+            result = addFloat(numbers);
+        } else if (SNumberUtils.hasLong(numbers)) {
+            result = addLong(numbers);
         } else
-            result = addInteger(args1);
+            result = addInteger(numbers);
 
         return new SNumber(result);
     }

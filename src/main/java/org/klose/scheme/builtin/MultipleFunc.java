@@ -1,19 +1,21 @@
 package org.klose.scheme.builtin;
 
 import org.klose.scheme.type.SNumber;
+import org.klose.scheme.type.SObject;
 import org.klose.scheme.utils.SNumberUtils;
 
 public class MultipleFunc {
-    public static SNumber multiple(SNumber... args) {
+    public static SNumber multiple(SObject... args) {
         Number result;
-        if (SNumberUtils.hasDouble(args)) {
-            result = multipleDouble(args);
-        } else if (SNumberUtils.hasFloat(args)) {
-            result = multipleFloat(args);
-        } else if (SNumberUtils.hasLong(args)) {
-            result = multipleLong(args);
+        SNumber[] numbers = SNumberUtils.convert(args);
+        if (SNumberUtils.hasDouble(numbers)) {
+            result = multipleDouble(numbers);
+        } else if (SNumberUtils.hasFloat(numbers)) {
+            result = multipleFloat(numbers);
+        } else if (SNumberUtils.hasLong(numbers)) {
+            result = multipleLong(numbers);
         } else
-            result = multipleInteger(args);
+            result = multipleInteger(numbers);
 
         return new SNumber(result);
     }

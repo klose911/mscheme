@@ -1,4 +1,5 @@
 package org.klose.scheme.type;
 
-public class SList {
+public class SList extends SObject {
+
 }

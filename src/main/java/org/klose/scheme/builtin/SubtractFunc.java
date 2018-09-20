@@ -6,14 +6,15 @@ import org.klose.scheme.utils.SNumberUtils;
 public class SubtractFunc {
     public static SNumber subtract(SNumber... args) {
         Number result;
-        if (SNumberUtils.hasDouble(args)) {
-            result = subtractDouble(args);
-        } else if (SNumberUtils.hasFloat(args)) {
-            result = subtractFloat(args);
-        } else if (SNumberUtils.hasLong(args)) {
-            result = subtractLong(args);
+        SNumber[] numbers = SNumberUtils.convert(args);
+        if (SNumberUtils.hasDouble(numbers)) {
+            result = subtractDouble(numbers);
+        } else if (SNumberUtils.hasFloat(numbers)) {
+            result = subtractFloat(numbers);
+        } else if (SNumberUtils.hasLong(numbers)) {
+            result = subtractLong(numbers);
         } else
-            result = subtractInteger(args);
+            result = subtractInteger(numbers);
 
         return new SNumber(result);
     }

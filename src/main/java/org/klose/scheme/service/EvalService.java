@@ -36,7 +36,7 @@ public class EvalService {
 
         SExpression s0 = exp.getChildren().get(0);
         switch (s0.getStr()) {
-            case "quoted":
+            case "quote":
                 return exp.getChildren().get(1);
             case "if":
                 return evalIf(exp, env);
@@ -77,7 +77,7 @@ public class EvalService {
             return EvalService.eval(consequent, env);
         } else {
             if (exp.getChildren().size() == 4) {
-                SExpression alternative = exp.getChildren().get(4);
+                SExpression alternative = exp.getChildren().get(3);
                 return EvalService.eval(alternative, env);
             } else
                 return new SBoolean(false);
