@@ -15,27 +15,19 @@ public class SParser {
     private final static Logger logger = LoggerFactory.getLogger(SParser.class);
 
     public static List<String> tokenize(String text) {
-        logger.info("start tokenize input");
-        logger.debug("[input statement : {} ]", text);
         List<String> tokens = new LinkedList<>();
         StringTokenizer tokenizer = new StringTokenizer(text.replace("(", " ( ").replace(")", " ) "));
         while (tokenizer.hasMoreTokens())
             tokens.add(tokenizer.nextToken());
 
-        logger.info("finish tokenize");
-        logger.debug("tokens : {}", joinTokens(tokens));
-
         return tokens;
     }
 
     public static SExpression parse(String code) {
-        logger.info("start parser s-expression");
-        logger.debug("[s-expression : {}", code);
-
         SExpression program = new SExpression("", null);
         SExpression current = program;
         for (String lex : tokenize(code)) {
-            if (lex.equals("(")) {
+            if ("(".equals(lex)) {
                 SExpression newNode = new SExpression("", current);
                 current.getChildren().add(newNode);
                 current = newNode;
@@ -47,7 +39,6 @@ public class SParser {
         }
         SExpression parsed = program.getChildren().get(0);
 
-        logger.info("finish parsing");
         traceLog(parsed);
         return parsed;
     }

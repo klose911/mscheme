@@ -1,4 +1,4 @@
-package org.klose.scheme.utils;
+package org.klose.scheme.func;
 
 import junit.framework.Assert;
 import org.junit.Test;

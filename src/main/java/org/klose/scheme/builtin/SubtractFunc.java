@@ -1,16 +1,16 @@
 package org.klose.scheme.builtin;
 
 import org.klose.scheme.type.SNumber;
-import org.klose.scheme.utils.NumberUtils;
+import org.klose.scheme.utils.SNumberUtils;
 
 public class SubtractFunc {
     public static SNumber subtract(SNumber... args) {
         Number result;
-        if (NumberUtils.hasDouble(args)) {
+        if (SNumberUtils.hasDouble(args)) {
             result = subtractDouble(args);
-        } else if (NumberUtils.hasFloat(args)) {
+        } else if (SNumberUtils.hasFloat(args)) {
             result = subtractFloat(args);
-        } else if (NumberUtils.hasLong(args)) {
+        } else if (SNumberUtils.hasLong(args)) {
             result = subtractLong(args);
         } else
             result = subtractInteger(args);

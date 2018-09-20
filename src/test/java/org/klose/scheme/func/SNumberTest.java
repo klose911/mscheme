@@ -1,4 +1,4 @@
-package org.klose.scheme.utils;
+package org.klose.scheme.func;
 
 
 import org.apache.commons.lang3.math.NumberUtils;

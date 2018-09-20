@@ -2,7 +2,7 @@ package org.klose.scheme.utils;
 
 import org.klose.scheme.type.SNumber;
 
-public class NumberUtils {
+public class SNumberUtils {
 
     public static boolean hasDouble(SNumber[] args) {
         for (SNumber n : args) {

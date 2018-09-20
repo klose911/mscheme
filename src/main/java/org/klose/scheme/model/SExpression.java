@@ -1,11 +1,16 @@
 package org.klose.scheme.model;
 
+import org.klose.scheme.type.SObject;
+
+import java.util.ArrayList;
 import java.util.List;
 
-public class SExpression {
+import static java.util.stream.Collectors.joining;
+
+public class SExpression extends SObject {
 
     private String str;
-    private List<SExpression> children;
+    private List<SExpression> children = new ArrayList<>();
     private SExpression parent;
 
     public SExpression(String str, SExpression parent) {
@@ -39,14 +44,20 @@ public class SExpression {
 
     @Override
     public String toString() {
-        if (str.equals("")) {
-            StringBuilder builder = new StringBuilder();
-            builder.append("(");
-            for (SExpression child : children)
-                builder.append(" ").append(child).append(" ");
-            builder.append(")");
-            return builder.toString();
-        } else
-            return str;
+        StringBuilder builder = new StringBuilder();
+        if (children.isEmpty())
+            builder.append("'").append(str).append("'");
+        else {
+            builder.append("[");
+            builder.append(children.stream()
+                    .map(SExpression::toString)
+                    .collect(joining(",")));
+            builder.append("]");
+        }
+        return builder.toString();
+    }
+
+    public boolean hasNoneChild() {
+        return children == null || children.isEmpty();
     }
 }

@@ -1,19 +1,24 @@
 package org.klose.scheme.builtin;
 
 import org.klose.scheme.type.SNumber;
-import org.klose.scheme.utils.NumberUtils;
+import org.klose.scheme.type.SObject;
+import org.klose.scheme.utils.SNumberUtils;
 
 public class AddFunc {
-    public static SNumber add(SNumber... args) {
+    public static SNumber add(SObject... args) {
         Number result;
-        if (NumberUtils.hasDouble(args)) {
-            result = addDouble(args);
-        } else if (NumberUtils.hasFloat(args)) {
-            result = addFloat(args);
-        } else if (NumberUtils.hasLong(args)) {
-            result = addLong(args);
+        SNumber[] args1 = new SNumber[args.length];
+        for(int i = 0; i<args.length; i++) {
+            args1[i] = (SNumber) args[i];
+        }
+        if (SNumberUtils.hasDouble(args1)) {
+            result = addDouble(args1);
+        } else if (SNumberUtils.hasFloat(args1)) {
+            result = addFloat(args1);
+        } else if (SNumberUtils.hasLong(args1)) {
+            result = addLong(args1);
         } else
-            result = addInteger(args);
+            result = addInteger(args1);
 
         return new SNumber(result);
     }
