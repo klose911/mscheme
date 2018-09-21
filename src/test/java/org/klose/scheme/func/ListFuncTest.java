@@ -5,8 +5,8 @@ import org.klose.scheme.constant.SConstant;
 import org.klose.scheme.type.*;
 
 import static junit.framework.Assert.*;
-import static org.klose.scheme.builtin.ListFunc.list;
-import static org.klose.scheme.builtin.PairFunc.*;
+import static org.klose.scheme.primitive.ListFunc.list;
+import static org.klose.scheme.primitive.PairFunc.*;
 
 public class ListFuncTest {
 
@@ -21,7 +21,7 @@ public class ListFuncTest {
     @Test
     public void singleElementList() {
         SList list = list(new SNumber(100));
-        assertEquals(100, ((SNumber) car(list)).getValue());
+        assertEquals(100, car(list).getValue());
         assertEquals(SConstant.NIL, cdr(list));
     }
 
@@ -29,10 +29,10 @@ public class ListFuncTest {
     public void multiElementsList() {
         SList list = list(new SNumber(10), new SNumber(20d),
                 new SBoolean(true), new SString("hello"));
-        assertEquals(10, ((SNumber) car(list)).getValue());
-        assertEquals(20d, ((SNumber) car(cdr(list))).getValue());
-        assertTrue(((SBoolean) car(cdr(cdr(list)))).getValue());
-        assertEquals("hello", car(cdr(cdr(cdr(list)))).getStr());
+        assertEquals(10, car(list).getValue());
+        assertEquals(20d, car(cdr(list)).getValue());
+        assertTrue((Boolean) car(cdr(cdr(list))).getValue());
+        assertEquals("hello", car(cdr(cdr(cdr(list)))).getValue());
     }
 
     @Test
@@ -40,14 +40,14 @@ public class ListFuncTest {
         SList list = list(new SNumber(100),
                 list(new SBoolean(false), new SString("world")),
                 cons(new SNumber(21.f), new SNumber(-200L)));
-        assertEquals(100, ((SNumber) car(list)).getValue());
+        assertEquals(100, car(list).getValue());
         assertTrue(car(cdr(list)) instanceof SList);
         assertTrue(car(car(cdr(list))) instanceof SBoolean);
-        assertFalse(((SBoolean) car(car(cdr(list)))).getValue());
+        assertFalse((Boolean) car(car(cdr(list))).getValue());
         assertTrue(car(cdr(car(cdr(list)))) instanceof SString);
-        assertEquals("world", (car(cdr(car(cdr(list)))).getStr()));
+        assertEquals("world", (car(cdr(car(cdr(list)))).getValue()));
         assertTrue(car(cdr(cdr(list))) instanceof SPair);
-        assertEquals(21.f, ((SNumber) car(car(cdr(cdr(list))))).getValue());
-        assertEquals(-200L, ((SNumber) cdr(car(cdr(cdr(list))))).getValue());
+        assertEquals(21.f, car(car(cdr(cdr(list)))).getValue());
+        assertEquals(-200L, cdr(car(cdr(cdr(list)))).getValue());
     }
 }

@@ -4,7 +4,7 @@ package org.klose.scheme.service;
 import org.klose.scheme.model.SEnvironment;
 import org.klose.scheme.model.SProcedure;
 import org.klose.scheme.type.SBoolean;
-import org.klose.scheme.type.SFunc;
+import org.klose.scheme.type.SPrimitive;
 import org.klose.scheme.type.SObject;
 
 import java.lang.reflect.InvocationTargetException;
@@ -18,12 +18,12 @@ public class ApplyService {
 
     public static SObject apply(SProcedure procedure, SObject[] arguments) {
         if (procedure.isPrimitive())
-            return applyPrimitive((SFunc) procedure, arguments);
+            return applyPrimitive((SPrimitive) procedure, arguments);
         else
             return applyComposite(procedure, arguments);
     }
 
-    private static SObject applyPrimitive(SFunc func, SObject[] arguments) {
+    private static SObject applyPrimitive(SPrimitive func, SObject[] arguments) {
         Class clazz;
         try {
             clazz = Class.forName(func.getClazz());

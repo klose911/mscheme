@@ -4,7 +4,7 @@ import org.junit.Test;
 import org.klose.scheme.type.SNumber;
 
 import static junit.framework.Assert.assertEquals;
-import static org.klose.scheme.builtin.MultipleFunc.multiple;
+import static org.klose.scheme.primitive.MultipleFunc.multiple;
 
 public class MultipleFuncTest {
     @Test

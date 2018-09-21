@@ -4,7 +4,7 @@ import org.junit.Test;
 import org.klose.scheme.type.SNumber;
 
 import static junit.framework.Assert.assertEquals;
-import static org.klose.scheme.builtin.AddFunc.add;
+import static org.klose.scheme.primitive.AddFunc.add;
 
 public class AddFuncTest {
     @Test

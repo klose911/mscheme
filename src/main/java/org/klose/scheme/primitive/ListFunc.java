@@ -1,4 +1,4 @@
-package org.klose.scheme.builtin;
+package org.klose.scheme.primitive;
 
 import org.klose.scheme.constant.SConstant;
 import org.klose.scheme.type.SBoolean;

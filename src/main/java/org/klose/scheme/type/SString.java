@@ -1,12 +1,20 @@
 package org.klose.scheme.type;
 
-public class SString extends SObject {
-    public SString(String str) {
-        super(str);
+public class SString implements SObject {
+    private final String value;
+
+    public SString(String value) {
+        this.value = value;
+    }
+
+    public String getValue() {
+        return value;
     }
 
     @Override
     public String toString() {
-        return "\"" + str + "\"";
+        return "\"" + value + "\"";
     }
+
+
 }

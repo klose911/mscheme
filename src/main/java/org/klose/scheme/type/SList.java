@@ -25,20 +25,12 @@ public class SList extends SPair {
     @Override
     public String toString() {
         SObject first = car;
-        StringBuffer buffer;
-        if (first == null) {
-            buffer = new StringBuffer("(");
-        } else {
-            buffer = new StringBuffer("(" + first);
-        }
+        StringBuilder builder = new StringBuilder("(");
+        if (first != null)
+            builder = builder.append(first);
 
-        SList rest = (SList) cdr;
-        while (rest != null && rest.getCar() != null) {
-            buffer.append(" ").append(rest.getCar());
-            rest = (SList) rest.getCdr();
-        }
-        buffer.append(")");
-        return buffer.toString();
+        builder.append(cdr).append(")");
+        return builder.toString();
     }
 
     public static void main(String[] args) {

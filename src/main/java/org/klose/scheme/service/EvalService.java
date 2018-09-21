@@ -24,7 +24,7 @@ public class EvalService {
             throw new IllegalArgumentException("environment can not be null");
 
         if (exp.hasNoneChild()) {
-            String str = exp.getStr();
+            String str = exp.getValue();
             if (EvalUtils.isNumber(str))
                 return new SNumber(NumberUtils.createNumber(str));
             else if (EvalUtils.isString(str))
@@ -35,7 +35,7 @@ public class EvalService {
         }
 
         SExpression s0 = exp.getChildren().get(0);
-        switch (s0.getStr()) {
+        switch (s0.getValue()) {
             case "quote":
                 return exp.getChildren().get(1);
             case "if":
@@ -85,14 +85,14 @@ public class EvalService {
     }
 
     private static SString evalDefine(SExpression exp, SEnvironment env) {
-        String var = exp.getChildren().get(1).getStr();
+        String var = exp.getChildren().get(1).getValue();
         SObject value = EvalService.eval(exp.getChildren().get(2), env);
         env.define(var, value);
         return new SString("ok");
     }
 
     private static SString evalAssign(SExpression exp, SEnvironment env) {
-        String var = exp.getChildren().get(1).getStr();
+        String var = exp.getChildren().get(1).getValue();
         SObject value = EvalService.eval(exp.getChildren().get(2), env);
         env.assign(var, value);
         return new SString("ok");
@@ -103,7 +103,7 @@ public class EvalService {
         SExpression parametersExp = exp.getChildren().get(1);
         List<String> parameters = new ArrayList<>();
         for (SExpression p : parametersExp.getChildren()) {
-            parameters.add(p.getStr());
+            parameters.add(p.getValue());
         }
         return new SProcedure(body, parameters, env);
     }

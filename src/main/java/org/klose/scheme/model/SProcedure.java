@@ -1,18 +1,14 @@
 package org.klose.scheme.model;
 
-import org.apache.commons.lang3.StringUtils;
+import org.klose.scheme.type.SPrimitive;
 import org.klose.scheme.type.SObject;
 
 import java.util.List;
 
-public class SProcedure extends SObject {
-
-    private SExpression body;
-    private List<String> parameters;
-    private SEnvironment context;
-
-    public SProcedure() {
-    }
+public class SProcedure implements SObject {
+    private final SExpression body;
+    private final List<String> parameters;
+    private final SEnvironment context;
 
     public SProcedure(SExpression body, List<String> parameters, SEnvironment context) {
         this.body = body;
@@ -32,19 +28,12 @@ public class SProcedure extends SObject {
         return context;
     }
 
-    public void setBody(SExpression body) {
-        this.body = body;
-    }
-
-    public void setParameters(List<String> parameters) {
-        this.parameters = parameters;
-    }
-
-    public void setContext(SEnvironment context) {
-        this.context = context;
-    }
-
     public boolean isPrimitive() {
-        return !StringUtils.isEmpty(str);
+        return this instanceof SPrimitive;
+    }
+
+    @Override
+    public Object getValue() {
+        throw new UnsupportedOperationException();
     }
 }

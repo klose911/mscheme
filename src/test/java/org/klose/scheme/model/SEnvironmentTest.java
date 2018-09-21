@@ -7,7 +7,7 @@ import org.klose.scheme.type.SNumber;
 
 import static junit.framework.Assert.assertEquals;
 
-public class SEnviormentTest {
+public class SEnvironmentTest {
 
     @Rule
     public ExpectedException exceptionRule = ExpectedException.none();
@@ -16,7 +16,7 @@ public class SEnviormentTest {
     public void defineVariable() {
         SEnvironment env = new SEnvironment();
         env.define("x", new SNumber(100));
-        assertEquals(100, ((SNumber) env.lookup("x")).getValue());
+        assertEquals(100, env.lookup("x").getValue());
     }
 
     @Test
@@ -27,9 +27,9 @@ public class SEnviormentTest {
         env2.setParent(env1);
         env2.define("x", new SNumber(200));
         assertEquals(100,
-                ((SNumber) env1.lookup("x")).getValue());
+                env1.lookup("x").getValue());
         assertEquals(200,
-                ((SNumber) env2.lookup("x")).getValue());
+                env2.lookup("x").getValue());
     }
 
 
@@ -39,7 +39,7 @@ public class SEnviormentTest {
         env.define("x", new SNumber(100));
         env.assign("x", new SNumber(200));
         assertEquals(200,
-                ((SNumber) env.lookup("x")).getValue());
+                env.lookup("x").getValue());
     }
 
     @Test
@@ -59,11 +59,10 @@ public class SEnviormentTest {
         env2.define("x", new SNumber(200));
         env1.assign("x", new SNumber(300));
 
-
         assertEquals(300,
-                ((SNumber) env1.lookup("x")).getValue());
+                env1.lookup("x").getValue());
         assertEquals(200,
-                ((SNumber) env2.lookup("x")).getValue());
+                env2.lookup("x").getValue());
 
     }
 }

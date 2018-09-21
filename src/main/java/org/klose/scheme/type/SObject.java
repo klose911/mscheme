@@ -3,21 +3,8 @@ package org.klose.scheme.type;
 
 import java.io.Serializable;
 
-public class SObject implements Serializable {
-    protected String str;
 
-    public String getStr() {
-        return str;
-    }
+public interface SObject extends Serializable {
 
-    public void setStr(String str) {
-        this.str = str;
-    }
-
-    public SObject() {
-    }
-
-    public SObject(String str) {
-        this.str = str;
-    }
+    Object getValue();
 }

@@ -4,13 +4,14 @@ import org.junit.Test;
 import org.klose.scheme.type.SNumber;
 
 import static junit.framework.Assert.assertTrue;
-import static org.klose.scheme.builtin.CompareFunc.*;
+import static org.klose.scheme.primitive.CompareFunc.*;
 
 public class CompareFuncTest {
 
     @Test
     public void equalsCompare() {
-        assertTrue(eq(new SNumber(1000.0d), new SNumber(1000.0d)).getValue());
+        assertTrue(eq(new SNumber(1000.0d),
+                new SNumber(1000.0d)).getValue());
         assertTrue(eq(new SNumber(1000.0d),
                 new SNumber(1000.0f)).getValue());
         assertTrue(eq(new SNumber(1000.0d),

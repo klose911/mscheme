@@ -6,7 +6,7 @@ import org.junit.rules.ExpectedException;
 import org.klose.scheme.type.SNumber;
 
 import static junit.framework.Assert.assertEquals;
-import static org.klose.scheme.builtin.DivideFunc.divide;
+import static org.klose.scheme.primitive.DivideFunc.divide;
 
 public class DivideFuncTest {
     @Rule

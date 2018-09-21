@@ -1,5 +1,6 @@
 package org.klose.scheme.model;
 
+import org.apache.commons.lang3.StringUtils;
 import org.klose.scheme.type.SObject;
 
 import java.util.ArrayList;
@@ -7,11 +8,11 @@ import java.util.List;
 
 import static java.util.stream.Collectors.joining;
 
-public class SExpression extends SObject {
+public class SExpression implements SObject {
 
-    private String str;
-    private List<SExpression> children = new ArrayList<>();
-    private SExpression parent;
+    private final String str;
+    private final List<SExpression> children = new ArrayList<>();
+    private final SExpression parent;
 
     public SExpression(String str, SExpression parent) {
         this.str = str;
@@ -22,25 +23,21 @@ public class SExpression extends SObject {
         return str;
     }
 
-    public void setStr(String str) {
-        this.str = str;
+    @Override
+    public String getValue() {
+        return StringUtils.isEmpty(str) ? toString() : str;
     }
+
 
     public List<SExpression> getChildren() {
         return children;
     }
 
-    public void setChildren(List<SExpression> children) {
-        this.children = children;
-    }
 
     public SExpression getParent() {
         return parent;
     }
 
-    public void setParent(SExpression parent) {
-        this.parent = parent;
-    }
 
     @Override
     public String toString() {
@@ -58,6 +55,6 @@ public class SExpression extends SObject {
     }
 
     public boolean hasNoneChild() {
-        return children == null || children.isEmpty();
+        return children.isEmpty();
     }
 }

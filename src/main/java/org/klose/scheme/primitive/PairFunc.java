@@ -1,4 +1,4 @@
-package org.klose.scheme.builtin;
+package org.klose.scheme.primitive;
 
 import org.klose.scheme.type.SList;
 import org.klose.scheme.type.SObject;

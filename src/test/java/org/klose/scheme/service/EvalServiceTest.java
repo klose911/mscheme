@@ -8,7 +8,7 @@ import org.klose.scheme.type.*;
 import org.klose.scheme.utils.SParser;
 
 import static junit.framework.Assert.*;
-import static org.klose.scheme.service.EvalService.*;
+import static org.klose.scheme.service.EvalService.eval;
 
 public class EvalServiceTest {
 
@@ -18,7 +18,7 @@ public class EvalServiceTest {
         SExpression e = new SExpression(i.toString(), null);
         SObject o = eval(e, new SEnvironment());
         assertTrue(o instanceof SNumber);
-        assertEquals(i, ((SNumber) o).getValue());
+        assertEquals(i, o.getValue());
     }
 
     @Test
@@ -27,7 +27,7 @@ public class EvalServiceTest {
         SExpression e = new SExpression(f.toString(), null);
         SObject o = eval(e, new SEnvironment());
         assertTrue(o instanceof SNumber);
-        assertEquals(f, ((SNumber) o).getValue());
+        assertEquals(f, o.getValue());
     }
 
     @Test
@@ -36,7 +36,7 @@ public class EvalServiceTest {
         SExpression e = new SExpression("100L", null);
         SObject o = eval(e, new SEnvironment());
         assertTrue(o instanceof SNumber);
-        assertEquals(l, ((SNumber) o).getValue());
+        assertEquals(l, o.getValue());
     }
 
     @Test
@@ -45,7 +45,7 @@ public class EvalServiceTest {
         SExpression e = new SExpression("20.1d", null);
         SObject o = eval(e, new SEnvironment());
         assertTrue(o instanceof SNumber);
-        assertEquals(v, ((SNumber) o).getValue());
+        assertEquals(v, o.getValue());
     }
 
     @Test
@@ -54,7 +54,7 @@ public class EvalServiceTest {
         SExpression e = new SExpression("\"" + s + "\"", null);
         SObject o = eval(e, new SEnvironment());
         assertTrue(o instanceof SString);
-        assertEquals(s, o.getStr());
+        assertEquals(s, o.getValue());
     }
 
     @Test
@@ -63,7 +63,7 @@ public class EvalServiceTest {
         SExpression e = new SExpression("\"" + s + "\"", null);
         SObject o = eval(e, new SEnvironment());
         assertTrue(o instanceof SString);
-        assertEquals(s, o.getStr());
+        assertEquals(s, o.getValue());
     }
 
     @Test
@@ -72,7 +72,7 @@ public class EvalServiceTest {
         env.define("x", new SNumber(100));
         SExpression exp = new SExpression("x", null);
         SObject o = eval(exp, env);
-        assertEquals(100, ((SNumber) o).getValue());
+        assertEquals(100, o.getValue());
     }
 
     @Test
@@ -81,7 +81,7 @@ public class EvalServiceTest {
         env.define("true", new SBoolean(true));
         SObject o = eval(new SExpression("true", null), env);
         assertTrue(o instanceof SBoolean);
-        assertTrue(((SBoolean) o).getValue());
+        assertTrue((Boolean) o.getValue());
     }
 
     @Test
@@ -90,7 +90,7 @@ public class EvalServiceTest {
         env.define("false", new SBoolean(false));
         SObject o = eval(new SExpression("false", null), env);
         assertTrue(o instanceof SBoolean);
-        assertFalse(((SBoolean) o).getValue());
+        assertFalse((Boolean) o.getValue());
     }
 
     @Test
@@ -99,7 +99,7 @@ public class EvalServiceTest {
         SExpression exp = SParser.parse("(quote (a b))");
         SObject o = eval(exp, env);
         assertTrue(o instanceof SExpression);
-        assertEquals("(a b)", o.toString());
+        assertEquals("(a b)", o.getValue());
     }
 
     @Test
@@ -108,8 +108,8 @@ public class EvalServiceTest {
         SExpression exp = SParser.parse("(define a 100)");
         SObject o = eval(exp, env);
         assertTrue(o instanceof SString);
-        assertEquals("ok", o.getStr());
-        assertEquals(100, ((SNumber) env.lookup("a")).getValue());
+        assertEquals("ok", o.getValue());
+        assertEquals(100, (env.lookup("a")).getValue());
     }
 
     @Test
@@ -120,8 +120,8 @@ public class EvalServiceTest {
         SExpression exp1 = SParser.parse("(set! a 200)");
         SObject o = eval(exp1, env);
         assertTrue(o instanceof SString);
-        assertEquals("ok", o.getStr());
-        assertEquals(200, ((SNumber) env.lookup("a")).getValue());
+        assertEquals("ok", o.getValue());
+        assertEquals(200, (env.lookup("a")).getValue());
     }
 
     @Test
@@ -129,12 +129,12 @@ public class EvalServiceTest {
         SEnvironment env = new SEnvironment();
         env.define("false", new SBoolean(false));
         env.define("true", new SBoolean(true));
-        env.define(">", new SFunc("org.klose.scheme.builtin.CompareFunc.greater"));
-        env.define("+", new SFunc("org.klose.scheme.builtin.AddFunc.add"));
-        env.define("*", new SFunc("org.klose.scheme.builtin.MultipleFunc.multiple"));
+        env.define(">", new SPrimitive("org.klose.scheme.primitive.CompareFunc.greater"));
+        env.define("+", new SPrimitive("org.klose.scheme.primitive.AddFunc.add"));
+        env.define("*", new SPrimitive("org.klose.scheme.primitive.MultipleFunc.multiple"));
         SObject result = eval(SParser.parse("(if (> -5.123d -200L) (+ 1 2) (* 2 3))"), env);
         assertTrue(result instanceof SNumber);
-        assertEquals(3, ((SNumber) result).getValue());
+        assertEquals(3, result.getValue());
     }
 
     @Test
@@ -142,12 +142,12 @@ public class EvalServiceTest {
         SEnvironment env = new SEnvironment();
         env.define("false", new SBoolean(false));
         env.define("true", new SBoolean(true));
-        env.define(">", new SFunc("org.klose.scheme.builtin.CompareFunc.greater"));
-        env.define("+", new SFunc("org.klose.scheme.builtin.AddFunc.add"));
-        env.define("*", new SFunc("org.klose.scheme.builtin.MultipleFunc.multiple"));
+        env.define(">", new SPrimitive("org.klose.scheme.primitive.CompareFunc.greater"));
+        env.define("+", new SPrimitive("org.klose.scheme.primitive.AddFunc.add"));
+        env.define("*", new SPrimitive("org.klose.scheme.primitive.MultipleFunc.multiple"));
         SObject result = eval(SParser.parse("(if (> 3 5.0f) (+ 1 2) (* 2 3))"), env);
         assertTrue(result instanceof SNumber);
-        assertEquals(6, ((SNumber) result).getValue());
+        assertEquals(6, result.getValue());
     }
 
     @Test
@@ -155,12 +155,12 @@ public class EvalServiceTest {
         SEnvironment env = new SEnvironment();
         env.define("false", new SBoolean(false));
         env.define("true", new SBoolean(true));
-        env.define(">", new SFunc("org.klose.scheme.builtin.CompareFunc.greater"));
-        env.define("+", new SFunc("org.klose.scheme.builtin.AddFunc.add"));
-        env.define("*", new SFunc("org.klose.scheme.builtin.MultipleFunc.multiple"));
+        env.define(">", new SPrimitive("org.klose.scheme.primitive.CompareFunc.greater"));
+        env.define("+", new SPrimitive("org.klose.scheme.primitive.AddFunc.add"));
+        env.define("*", new SPrimitive("org.klose.scheme.primitive.MultipleFunc.multiple"));
         SObject result = eval(SParser.parse("(if (> 3 5.0f) (+ 1 2))"), env);
         assertTrue(result instanceof SBoolean);
-        assertFalse(((SBoolean) result).getValue());
+        assertFalse((Boolean) result.getValue());
     }
 
     @Test
