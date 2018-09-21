@@ -18,10 +18,19 @@ public class Application {
 
     public static void main(String[] args) {
         ExecutorService executor = Executors.newSingleThreadExecutor();
+        final Future<?> future = executor.submit(Application::repl);
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            future.cancel(true);
+            System.out.println();
+            System.out.println();
+            System.out.println("Have Fun, Bye Bye... ");
+        }));
+    }
+
+    private static Runnable repl() {
         BufferedReader console = new BufferedReader(new InputStreamReader(System.in));
         SEnvironment rootEnv = EnvUtils.init();
-
-        Runnable readPrintLoop = () -> {
+        return () -> {
             String src;
             while (true) {
                 System.out.print(">> ");
@@ -41,13 +50,5 @@ public class Application {
                 }
             }
         };
-
-        final Future<?> future = executor.submit(readPrintLoop);
-        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-            future.cancel(true);
-            System.out.println();
-            System.out.println();
-            System.out.println("Have Fun, Bye Bye... ");
-        }));
     }
 }
