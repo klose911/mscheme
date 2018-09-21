@@ -26,8 +26,10 @@ public class SEnvironment {
     public SObject lookup(String var) {
         if (vars.containsKey(var))
             return vars.get(var);
-        else
+        else if(parent != null)
             return parent.lookup(var);
+        else
+            throw new RuntimeException("not found variable");
     }
 
     public void define(String var, SObject val) {

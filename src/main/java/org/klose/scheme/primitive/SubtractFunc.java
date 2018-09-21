@@ -1,10 +1,11 @@
 package org.klose.scheme.primitive;
 
 import org.klose.scheme.type.SNumber;
+import org.klose.scheme.type.SObject;
 import org.klose.scheme.utils.SNumberUtils;
 
 public class SubtractFunc {
-    public static SNumber subtract(SNumber... args) {
+    public static SNumber subtract(SObject... args) {
         Number result;
         SNumber[] numbers = SNumberUtils.convert(args);
         if (SNumberUtils.hasDouble(numbers)) {

@@ -20,8 +20,12 @@ public class ListFunc {
     }
 
     public static SBoolean isNull(SObject... args) {
-        SList args0 = (SList) args[0];
-        return new SBoolean(SConstant.NIL.equals(args0));
+        if (args[0] instanceof SList) {
+            SList args0 = (SList) args[0];
+            return new SBoolean(SConstant.NIL.equals(args0));
+        } else
+            return SConstant.FALSE;
+
     }
 
     //@TODO optimize

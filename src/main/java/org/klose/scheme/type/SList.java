@@ -17,7 +17,12 @@ public class SList extends SPair {
         if (first != null)
             builder.append(first);
 
-        builder.append(cdr).append(")");
+        SList rest = (SList) cdr;
+        while (rest != null && rest.getCar() != null) {
+            builder.append(" ").append(rest.getCar());
+            rest = rest.getCdr();
+        }
+        builder.append(")");
         return builder.toString();
     }
 
