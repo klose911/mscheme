@@ -1,28 +1,34 @@
 package org.klose.scheme.model;
 
-import junit.framework.Assert;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.klose.scheme.type.SNumber;
 
+import static junit.framework.Assert.assertEquals;
+
 public class SEnviormentTest {
+
+    @Rule
+    public ExpectedException exceptionRule = ExpectedException.none();
 
     @Test
     public void defineVariable() {
         SEnvironment env = new SEnvironment();
         env.define("x", new SNumber(100));
-        Assert.assertEquals(100, ((SNumber) env.lookup("x")).getValue());
+        assertEquals(100, ((SNumber) env.lookup("x")).getValue());
     }
 
     @Test
-    public void defineVariable2() {
+    public void defineVariableInOutSideEnv() {
         SEnvironment env1 = new SEnvironment();
         env1.define("x", new SNumber(100));
         SEnvironment env2 = new SEnvironment();
         env2.setParent(env1);
         env2.define("x", new SNumber(200));
-        Assert.assertEquals(100,
+        assertEquals(100,
                 ((SNumber) env1.lookup("x")).getValue());
-        Assert.assertEquals(200,
+        assertEquals(200,
                 ((SNumber) env2.lookup("x")).getValue());
     }
 
@@ -32,23 +38,20 @@ public class SEnviormentTest {
         SEnvironment env = new SEnvironment();
         env.define("x", new SNumber(100));
         env.assign("x", new SNumber(200));
-        Assert.assertEquals(200,
+        assertEquals(200,
                 ((SNumber) env.lookup("x")).getValue());
     }
 
     @Test
     public void assignVariableError() {
+        exceptionRule.expect(RuntimeException.class);
+        exceptionRule.expectMessage("not found assigned variable");
         SEnvironment env = new SEnvironment();
-        try {
-            env.assign("x", new SNumber(200));
-        } catch (Exception e) {
-            Assert.assertEquals("not found assigned variable", e.getMessage());
-            e.printStackTrace();
-        }
+        env.assign("x", new SNumber(200));
     }
 
     @Test
-    public void assignVariable2() {
+    public void assignVariableInOutSideEnv() {
         SEnvironment env1 = new SEnvironment();
         env1.define("x", new SNumber(100));
         SEnvironment env2 = new SEnvironment();
@@ -57,9 +60,9 @@ public class SEnviormentTest {
         env1.assign("x", new SNumber(300));
 
 
-        Assert.assertEquals(300,
+        assertEquals(300,
                 ((SNumber) env1.lookup("x")).getValue());
-        Assert.assertEquals(200,
+        assertEquals(200,
                 ((SNumber) env2.lookup("x")).getValue());
 
     }

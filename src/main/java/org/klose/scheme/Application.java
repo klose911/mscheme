@@ -5,7 +5,7 @@ import org.klose.scheme.model.SEnvironment;
 import org.klose.scheme.model.SExpression;
 import org.klose.scheme.service.EvalService;
 import org.klose.scheme.type.SObject;
-import org.klose.scheme.utils.EnvUtils;
+import org.klose.scheme.utils.InitEnv;
 import org.klose.scheme.utils.SParser;
 
 import java.io.BufferedReader;
@@ -29,7 +29,7 @@ public class Application {
 
     private static Runnable repl() {
         BufferedReader console = new BufferedReader(new InputStreamReader(System.in));
-        SEnvironment rootEnv = EnvUtils.init();
+        SEnvironment rootEnv = InitEnv.init();
         return () -> {
             String src;
             while (true) {

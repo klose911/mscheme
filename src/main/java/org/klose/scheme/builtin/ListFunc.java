@@ -23,6 +23,8 @@ public class ListFunc {
         SList args0 = (SList) args[0];
         return new SBoolean(SConstant.NIL.equals(args0));
     }
+
+    //@TODO optimize
     private static SObject[] restArgs(SObject... args) {
         final int length = args.length;
         if (length > 1) {

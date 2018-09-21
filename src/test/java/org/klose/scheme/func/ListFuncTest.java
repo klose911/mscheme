@@ -1,53 +1,53 @@
 package org.klose.scheme.func;
 
-import junit.framework.Assert;
 import org.junit.Test;
-import org.klose.scheme.builtin.ListFunc;
-import org.klose.scheme.builtin.PairFunc;
 import org.klose.scheme.constant.SConstant;
 import org.klose.scheme.type.*;
+
+import static junit.framework.Assert.*;
+import static org.klose.scheme.builtin.ListFunc.list;
+import static org.klose.scheme.builtin.PairFunc.*;
 
 public class ListFuncTest {
 
     @Test
     public void nullList() {
-        SList l = ListFunc.list();
-        Assert.assertEquals(SConstant.NIL, l);
-        Assert.assertNull(l.getCar());
-        Assert.assertNull(l.getCdr());
+        SList list = list();
+        assertEquals(SConstant.NIL, list);
+        assertNull(car(list));
+        assertNull(cdr(list));
     }
 
     @Test
     public void singleElementList() {
-        SList l = ListFunc.list(new SNumber(100));
-        Assert.assertEquals(100, ((SNumber) l.getCar()).getValue());
-        Assert.assertEquals(SConstant.NIL, l.getCdr());
+        SList list = list(new SNumber(100));
+        assertEquals(100, ((SNumber) car(list)).getValue());
+        assertEquals(SConstant.NIL, cdr(list));
     }
 
     @Test
-    public void multipleElementlist() {
-        SList l = ListFunc.list(new SNumber(10), new SNumber(20d),
+    public void multiElementsList() {
+        SList list = list(new SNumber(10), new SNumber(20d),
                 new SBoolean(true), new SString("hello"));
-        Assert.assertEquals(10, ((SNumber) l.getCar()).getValue());
-        Assert.assertEquals(20d, ((SNumber) l.getCdr().getCar()).getValue());
-        Assert.assertTrue(((SBoolean) l.getCdr().getCdr().getCar()).getValue());
-        Assert.assertEquals("hello", l.getCdr().getCdr().getCdr().getCar().getStr());
-        Assert.assertEquals(SConstant.NIL, l.getCdr().getCdr().getCdr().getCdr());
+        assertEquals(10, ((SNumber) car(list)).getValue());
+        assertEquals(20d, ((SNumber) car(cdr(list))).getValue());
+        assertTrue(((SBoolean) car(cdr(cdr(list)))).getValue());
+        assertEquals("hello", car(cdr(cdr(cdr(list)))).getStr());
     }
 
     @Test
     public void hierarchyList() {
-        SList l = ListFunc.list(new SNumber(100),
-                ListFunc.list(new SBoolean(false), new SString("world")),
-                PairFunc.cons(new SNumber(21.f), new SNumber(-200L)));
-        Assert.assertEquals(100, ((SNumber) l.getCar()).getValue());
-        Assert.assertTrue(l.getCdr().getCar() instanceof SList);
-        Assert.assertTrue(((SList) l.getCdr().getCar()).getCar() instanceof SBoolean);
-        Assert.assertFalse(((SBoolean) ((SList) l.getCdr().getCar()).getCar()).getValue());
-        Assert.assertTrue(((SList) l.getCdr().getCar()).getCdr().getCar() instanceof SString);
-        Assert.assertEquals("world", ((SList) l.getCdr().getCar()).getCdr().getCar().getStr());
-        Assert.assertTrue(l.getCdr().getCdr().getCar() instanceof SPair);
-        Assert.assertEquals(21.f, ((SNumber) ((SPair) l.getCdr().getCdr().getCar()).getCar()).getValue());
-        Assert.assertEquals(-200L, ((SNumber) ((SPair) l.getCdr().getCdr().getCar()).getCdr()).getValue());
+        SList list = list(new SNumber(100),
+                list(new SBoolean(false), new SString("world")),
+                cons(new SNumber(21.f), new SNumber(-200L)));
+        assertEquals(100, ((SNumber) car(list)).getValue());
+        assertTrue(car(cdr(list)) instanceof SList);
+        assertTrue(car(car(cdr(list))) instanceof SBoolean);
+        assertFalse(((SBoolean) car(car(cdr(list)))).getValue());
+        assertTrue(car(cdr(car(cdr(list)))) instanceof SString);
+        assertEquals("world", (car(cdr(car(cdr(list)))).getStr()));
+        assertTrue(car(cdr(cdr(list))) instanceof SPair);
+        assertEquals(21.f, ((SNumber) car(car(cdr(cdr(list))))).getValue());
+        assertEquals(-200L, ((SNumber) cdr(car(cdr(cdr(list))))).getValue());
     }
 }

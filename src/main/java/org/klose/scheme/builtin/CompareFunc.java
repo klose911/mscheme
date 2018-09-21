@@ -16,7 +16,7 @@ public class CompareFunc {
                 < ((SNumber)args[1]).getValue().doubleValue());
     }
 
-    public static SBoolean equals(SObject... args) {
+    public static SBoolean eq(SObject... args) {
         return new SBoolean(((SNumber)args[0]).getValue().doubleValue()
                 == ((SNumber)args[1]).getValue().doubleValue());
     }

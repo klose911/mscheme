@@ -1,11 +1,15 @@
 package org.klose.scheme.builtin;
 
+import org.klose.scheme.type.SList;
 import org.klose.scheme.type.SObject;
 import org.klose.scheme.type.SPair;
 
 public class PairFunc {
     public static SPair cons(SObject... args) {
-        return new SPair(args[0], args[1]);
+        if (args[1] instanceof SList)
+            return new SList(args[0], (SList) args[1]);
+        else
+            return new SPair(args[0], args[1]);
     }
 
     public static SObject car(SObject... args) {

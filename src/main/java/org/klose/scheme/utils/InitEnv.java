@@ -9,7 +9,7 @@ import java.util.Map;
 
 import static org.klose.scheme.constant.SConstant.*;
 
-public class EnvUtils {
+public class InitEnv {
     private static Map<String, SObject> builtinMap;
 
     static {
@@ -23,7 +23,7 @@ public class EnvUtils {
         builtinMap.put(SUB, new SFunc("org.klose.scheme.builtin.SubtractFunc.subtract"));
         builtinMap.put(MUL, new SFunc("org.klose.scheme.builtin.MultipleFunc.multiple"));
         builtinMap.put(DIV, new SFunc("org.klose.scheme.builtin.DivideFunc.divide"));
-        builtinMap.put(EQ, new SFunc("org.klose.scheme.builtin.CompareFunc.equals"));
+        builtinMap.put(EQ, new SFunc("org.klose.scheme.builtin.CompareFunc.eq"));
         builtinMap.put(GT, new SFunc("org.klose.scheme.builtin.CompareFunc.greater"));
         builtinMap.put(LT, new SFunc("org.klose.scheme.builtin.CompareFunc.less"));
         // pair list

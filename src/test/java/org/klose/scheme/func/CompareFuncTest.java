@@ -1,81 +1,81 @@
 package org.klose.scheme.func;
 
-import junit.framework.Assert;
 import org.junit.Test;
-import org.klose.scheme.builtin.CompareFunc;
 import org.klose.scheme.type.SNumber;
+
+import static junit.framework.Assert.assertTrue;
+import static org.klose.scheme.builtin.CompareFunc.*;
 
 public class CompareFuncTest {
 
     @Test
-    public void equals() {
-        Assert.assertTrue(CompareFunc.equals(new SNumber(1000.0d),
-                new SNumber(1000.0d)).getValue());
-        Assert.assertTrue(CompareFunc.equals(new SNumber(1000.0d),
+    public void equalsCompare() {
+        assertTrue(eq(new SNumber(1000.0d), new SNumber(1000.0d)).getValue());
+        assertTrue(eq(new SNumber(1000.0d),
                 new SNumber(1000.0f)).getValue());
-        Assert.assertTrue(CompareFunc.equals(new SNumber(1000.0d),
+        assertTrue(eq(new SNumber(1000.0d),
                 new SNumber(1000L)).getValue());
-        Assert.assertTrue(CompareFunc.equals(new SNumber(1000.0d),
+        assertTrue(eq(new SNumber(1000.0d),
                 new SNumber(1000)).getValue());
-        Assert.assertTrue(CompareFunc.equals(new SNumber(1000.0f),
+        assertTrue(eq(new SNumber(1000.0f),
                 new SNumber(1000.0d)).getValue());
-        Assert.assertTrue(CompareFunc.equals(new SNumber(1000.0f),
+        assertTrue(eq(new SNumber(1000.0f),
                 new SNumber(1000L)).getValue());
-        Assert.assertTrue(CompareFunc.equals(new SNumber(1000.0f),
+        assertTrue(eq(new SNumber(1000.0f),
                 new SNumber(1000)).getValue());
-        Assert.assertTrue(CompareFunc.equals(new SNumber(1000L),
+        assertTrue(eq(new SNumber(1000L),
                 new SNumber(1000L)).getValue());
-        Assert.assertTrue(CompareFunc.equals(new SNumber(1000L),
+        assertTrue(eq(new SNumber(1000L),
                 new SNumber(1000)).getValue());
-        Assert.assertTrue(CompareFunc.equals(new SNumber(1000),
+        assertTrue(eq(new SNumber(1000),
                 new SNumber(1000)).getValue());
     }
 
     @Test
-    public void greater() {
-        Assert.assertTrue(CompareFunc.greater(new SNumber(1000.1d),
+    public void greaterCompare() {
+        assertTrue(greater(new SNumber(1000.1d),
                 new SNumber(1000.0d)).getValue());
-        Assert.assertTrue(CompareFunc.greater(new SNumber(1000.1d),
+        assertTrue(greater(new SNumber(1000.1d),
                 new SNumber(1000.0f)).getValue());
-        Assert.assertTrue(CompareFunc.greater(new SNumber(1000.1d),
+        assertTrue(greater(new SNumber(1000.1d),
                 new SNumber(1000L)).getValue());
-        Assert.assertTrue(CompareFunc.greater(new SNumber(1000.1d),
+        assertTrue(greater(new SNumber(1000.1d),
                 new SNumber(1000)).getValue());
-        Assert.assertTrue(CompareFunc.greater(new SNumber(1000.1f),
+        assertTrue(greater(new SNumber(1000.1f),
                 new SNumber(1000.0d)).getValue());
-        Assert.assertTrue(CompareFunc.greater(new SNumber(1000.1f),
+        assertTrue(greater(new SNumber(1000.1f),
                 new SNumber(1000L)).getValue());
-        Assert.assertTrue(CompareFunc.greater(new SNumber(1000.1f),
+        assertTrue(greater(new SNumber(1000.1f),
                 new SNumber(1000)).getValue());
-        Assert.assertTrue(CompareFunc.greater(new SNumber(1001L),
+        assertTrue(greater(new SNumber(1001L),
                 new SNumber(1000L)).getValue());
-        Assert.assertTrue(CompareFunc.greater(new SNumber(1001L),
+        assertTrue(greater(new SNumber(1001L),
                 new SNumber(1000)).getValue());
-        Assert.assertTrue(CompareFunc.greater(new SNumber(1001),
+        assertTrue(greater(new SNumber(1001),
                 new SNumber(1000)).getValue());
     }
 
     @Test
-    public void less() {
-        Assert.assertTrue(CompareFunc.less(new SNumber(1000.0d),
+    public void lessCompare() {
+        assertTrue(less(new SNumber(1000.0d),
                 new SNumber(1000.1d)).getValue());
-        Assert.assertTrue(CompareFunc.less(new SNumber(1000.0d),
+        assertTrue(less(new SNumber(1000.0d),
                 new SNumber(1000.1f)).getValue());
-        Assert.assertTrue(CompareFunc.less(new SNumber(1000.0d),
+        assertTrue(less(new SNumber(1000.0d),
                 new SNumber(1001L)).getValue());
-        Assert.assertTrue(CompareFunc.less(new SNumber(1000.0d),
+        assertTrue(less(new SNumber(1000.0d),
                 new SNumber(1001)).getValue());
-        Assert.assertTrue(CompareFunc.less(new SNumber(1000.0f),
+        assertTrue(less(new SNumber(1000.0f),
                 new SNumber(1000.1d)).getValue());
-        Assert.assertTrue(CompareFunc.less(new SNumber(1000.0f),
+        assertTrue(less(new SNumber(1000.0f),
                 new SNumber(1001L)).getValue());
-        Assert.assertTrue(CompareFunc.less(new SNumber(1000.0f),
+        assertTrue(less(new SNumber(1000.0f),
                 new SNumber(1001)).getValue());
-        Assert.assertTrue(CompareFunc.less(new SNumber(1000L),
+        assertTrue(less(new SNumber(1000L),
                 new SNumber(1001L)).getValue());
-        Assert.assertTrue(CompareFunc.less(new SNumber(1000L),
+        assertTrue(less(new SNumber(1000L),
                 new SNumber(1001)).getValue());
-        Assert.assertTrue(CompareFunc.less(new SNumber(1000),
+        assertTrue(less(new SNumber(1000),
                 new SNumber(1001)).getValue());
     }
 }
