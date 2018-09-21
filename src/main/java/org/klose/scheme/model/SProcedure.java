@@ -14,10 +14,6 @@ public class SProcedure extends SObject {
     public SProcedure() {
     }
 
-    public SProcedure(String str) {
-        super(str);
-    }
-
     public SProcedure(SExpression body, List<String> parameters, SEnvironment context) {
         this.body = body;
         this.parameters = parameters;
