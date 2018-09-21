@@ -4,9 +4,10 @@ import org.junit.Test;
 import org.klose.scheme.model.SEnvironment;
 import org.klose.scheme.model.SExpression;
 import org.klose.scheme.model.SProcedure;
-import org.klose.scheme.type.SPrimitive;
 import org.klose.scheme.type.SNumber;
 import org.klose.scheme.type.SObject;
+import org.klose.scheme.type.SPrimitive;
+import org.klose.scheme.utils.InitEnv;
 import org.klose.scheme.utils.SParser;
 
 import java.util.ArrayList;
@@ -31,8 +32,7 @@ public class ApplyServiceTest {
 
     @Test
     public void compositeApply() {
-        SEnvironment environment = new SEnvironment();
-        environment.define("+", new SPrimitive("org.klose.scheme.primitive.AddFunc.add"));
+        SEnvironment environment = InitEnv.init();
         List<String> parameters = new ArrayList<>();
         parameters.add("x");
         parameters.add("y");
@@ -45,9 +45,7 @@ public class ApplyServiceTest {
 
     @Test
     public void anonymousApply() {
-        SEnvironment env = new SEnvironment();
-        env.define("+", new SPrimitive("org.klose.scheme.primitive.AddFunc.add"));
-        env.define("*", new SPrimitive("org.klose.scheme.primitive.MultipleFunc.multiple"));
+        SEnvironment env = InitEnv.init();
         SExpression exp = SParser.parse("(lambda (x y) (* 2 (+ x y) x y)");
         SProcedure procedure = (SProcedure) eval(exp, env);
         SObject result = apply(procedure, new SNumber[]{new SNumber(100), new SNumber(200)});

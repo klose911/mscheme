@@ -1,10 +1,11 @@
 package org.klose.scheme.func;
 
 import org.junit.Test;
-import org.klose.scheme.constant.SConstant;
 import org.klose.scheme.type.*;
 
 import static junit.framework.Assert.*;
+import static org.klose.scheme.constant.SConstant.NIL;
+import static org.klose.scheme.primitive.ListFunc.isNull;
 import static org.klose.scheme.primitive.ListFunc.list;
 import static org.klose.scheme.primitive.PairFunc.*;
 
@@ -13,16 +14,23 @@ public class ListFuncTest {
     @Test
     public void nullList() {
         SList list = list();
-        assertEquals(SConstant.NIL, list);
+        assertEquals(NIL, list);
+        assertTrue(isNull(list).getValue());
         assertNull(car(list));
         assertNull(cdr(list));
+    }
+
+    @Test
+    public void notNullList() {
+        SList list = list(NIL);
+        assertFalse(isNull(list).getValue());
     }
 
     @Test
     public void singleElementList() {
         SList list = list(new SNumber(100));
         assertEquals(100, car(list).getValue());
-        assertEquals(SConstant.NIL, cdr(list));
+        assertEquals(NIL, cdr(list));
     }
 
     @Test
@@ -50,4 +58,5 @@ public class ListFuncTest {
         assertEquals(21.f, car(car(cdr(cdr(list)))).getValue());
         assertEquals(-200L, cdr(car(cdr(cdr(list)))).getValue());
     }
+
 }

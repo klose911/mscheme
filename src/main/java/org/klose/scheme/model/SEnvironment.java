@@ -2,15 +2,13 @@ package org.klose.scheme.model;
 
 import org.klose.scheme.type.SObject;
 
-import java.util.HashMap;
+import java.util.Collections;
 import java.util.Map;
 
 public class SEnvironment {
-    private Map<String, SObject> vars = new HashMap<>();
-    private SEnvironment parent;
+    private final Map<String, SObject> vars;
+    private final SEnvironment parent;
 
-    public SEnvironment() {
-    }
 
     public SEnvironment(Map<String, SObject> vars, SEnvironment parent) {
         this.vars = vars;
@@ -18,19 +16,11 @@ public class SEnvironment {
     }
 
     public Map<String, SObject> getVars() {
-        return vars;
-    }
-
-    public void setVars(Map<String, SObject> vars) {
-        this.vars = vars;
+        return Collections.unmodifiableMap(vars);
     }
 
     public SEnvironment getParent() {
         return parent;
-    }
-
-    public void setParent(SEnvironment parent) {
-        this.parent = parent;
     }
 
     public SObject lookup(String var) {

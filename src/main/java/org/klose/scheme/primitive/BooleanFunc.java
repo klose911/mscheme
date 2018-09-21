@@ -16,7 +16,7 @@ public class BooleanFunc {
         return new SBoolean(!(Boolean) args[0].getValue());
     }
 
-    public static SBoolean eq(SObject... args) {
+    public static SBoolean equalsTo(SObject... args) {
         return new SBoolean(args[0].getValue().equals(args[1].getValue()));
     }
 }

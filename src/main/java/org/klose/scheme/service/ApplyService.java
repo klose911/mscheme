@@ -33,9 +33,7 @@ public class ApplyService {
             if (o.isPresent()) {
                 try {
                     return (SObject) o.get().invoke(null, new Object[]{arguments});
-                } catch (IllegalAccessException e) {
-                    e.printStackTrace();
-                } catch (InvocationTargetException e) {
+                } catch (IllegalAccessException | InvocationTargetException e) {
                     e.printStackTrace();
                 }
             }

@@ -3,6 +3,7 @@ package org.klose.scheme.model;
 import org.klose.scheme.type.SPrimitive;
 import org.klose.scheme.type.SObject;
 
+import java.util.Collections;
 import java.util.List;
 
 public class SProcedure implements SObject {
@@ -21,7 +22,7 @@ public class SProcedure implements SObject {
     }
 
     public List<String> getParameters() {
-        return parameters;
+        return Collections.unmodifiableList(parameters);
     }
 
     public SEnvironment getContext() {

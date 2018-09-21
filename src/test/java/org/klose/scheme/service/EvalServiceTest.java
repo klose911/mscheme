@@ -7,6 +7,8 @@ import org.klose.scheme.model.SProcedure;
 import org.klose.scheme.type.*;
 import org.klose.scheme.utils.SParser;
 
+import java.util.HashMap;
+
 import static junit.framework.Assert.*;
 import static org.klose.scheme.service.EvalService.eval;
 
@@ -16,7 +18,7 @@ public class EvalServiceTest {
     public void intValue() {
         final Integer i = 21;
         SExpression e = new SExpression(i.toString(), null);
-        SObject o = eval(e, new SEnvironment());
+        SObject o = eval(e, new SEnvironment(new HashMap<>(), null));
         assertTrue(o instanceof SNumber);
         assertEquals(i, o.getValue());
     }
@@ -25,7 +27,7 @@ public class EvalServiceTest {
     public void floatValue() {
         final Float f = 20.1f;
         SExpression e = new SExpression(f.toString(), null);
-        SObject o = eval(e, new SEnvironment());
+        SObject o = eval(e, new SEnvironment(new HashMap<>(), null));
         assertTrue(o instanceof SNumber);
         assertEquals(f, o.getValue());
     }
@@ -34,7 +36,7 @@ public class EvalServiceTest {
     public void longValue() {
         final Long l = 100L;
         SExpression e = new SExpression("100L", null);
-        SObject o = eval(e, new SEnvironment());
+        SObject o = eval(e, new SEnvironment(new HashMap<>(), null));
         assertTrue(o instanceof SNumber);
         assertEquals(l, o.getValue());
     }
@@ -43,7 +45,7 @@ public class EvalServiceTest {
     public void doubleValue() {
         final Double v = 20.1d;
         SExpression e = new SExpression("20.1d", null);
-        SObject o = eval(e, new SEnvironment());
+        SObject o = eval(e, new SEnvironment(new HashMap<>(), null));
         assertTrue(o instanceof SNumber);
         assertEquals(v, o.getValue());
     }
@@ -52,7 +54,7 @@ public class EvalServiceTest {
     public void stringValue() {
         String s = "hello 'world'\n";
         SExpression e = new SExpression("\"" + s + "\"", null);
-        SObject o = eval(e, new SEnvironment());
+        SObject o = eval(e, new SEnvironment(new HashMap<>(),null));
         assertTrue(o instanceof SString);
         assertEquals(s, o.getValue());
     }
@@ -61,14 +63,14 @@ public class EvalServiceTest {
     public void emptyStringValue() {
         String s = "";
         SExpression e = new SExpression("\"" + s + "\"", null);
-        SObject o = eval(e, new SEnvironment());
+        SObject o = eval(e, new SEnvironment(new HashMap<>(), null));
         assertTrue(o instanceof SString);
         assertEquals(s, o.getValue());
     }
 
     @Test
     public void lookUpVar() {
-        SEnvironment env = new SEnvironment();
+        SEnvironment env = new SEnvironment(new HashMap<>(), null);
         env.define("x", new SNumber(100));
         SExpression exp = new SExpression("x", null);
         SObject o = eval(exp, env);
@@ -77,7 +79,7 @@ public class EvalServiceTest {
 
     @Test
     public void evalTrue() {
-        SEnvironment env = new SEnvironment();
+        SEnvironment env = new SEnvironment(new HashMap<>(), null);
         env.define("true", new SBoolean(true));
         SObject o = eval(new SExpression("true", null), env);
         assertTrue(o instanceof SBoolean);
@@ -86,7 +88,7 @@ public class EvalServiceTest {
 
     @Test
     public void evalFalse() {
-        SEnvironment env = new SEnvironment();
+        SEnvironment env = new SEnvironment(new HashMap<>(), null);
         env.define("false", new SBoolean(false));
         SObject o = eval(new SExpression("false", null), env);
         assertTrue(o instanceof SBoolean);
@@ -95,7 +97,7 @@ public class EvalServiceTest {
 
     @Test
     public void evalQuote() {
-        SEnvironment env = new SEnvironment();
+        SEnvironment env = new SEnvironment(new HashMap<>(), null);
         SExpression exp = SParser.parse("(quote (a b))");
         SObject o = eval(exp, env);
         assertTrue(o instanceof SExpression);
@@ -104,7 +106,7 @@ public class EvalServiceTest {
 
     @Test
     public void evalDefine() {
-        SEnvironment env = new SEnvironment();
+        SEnvironment env = new SEnvironment(new HashMap<>(), null);
         SExpression exp = SParser.parse("(define a 100)");
         SObject o = eval(exp, env);
         assertTrue(o instanceof SString);
@@ -114,7 +116,7 @@ public class EvalServiceTest {
 
     @Test
     public void evalAssign() {
-        SEnvironment env = new SEnvironment();
+        SEnvironment env = new SEnvironment(new HashMap<>(), null);
         SExpression exp = SParser.parse("(define a 100)");
         eval(exp, env);
         SExpression exp1 = SParser.parse("(set! a 200)");
@@ -126,7 +128,7 @@ public class EvalServiceTest {
 
     @Test
     public void evalIfWithConsequent() {
-        SEnvironment env = new SEnvironment();
+        SEnvironment env = new SEnvironment(new HashMap<>(), null);
         env.define("false", new SBoolean(false));
         env.define("true", new SBoolean(true));
         env.define(">", new SPrimitive("org.klose.scheme.primitive.CompareFunc.greater"));
@@ -139,7 +141,7 @@ public class EvalServiceTest {
 
     @Test
     public void evalIfWithAlternative() {
-        SEnvironment env = new SEnvironment();
+        SEnvironment env = new SEnvironment(new HashMap<>(), null);
         env.define("false", new SBoolean(false));
         env.define("true", new SBoolean(true));
         env.define(">", new SPrimitive("org.klose.scheme.primitive.CompareFunc.greater"));
@@ -152,7 +154,7 @@ public class EvalServiceTest {
 
     @Test
     public void evalIfWithoutAlternative() {
-        SEnvironment env = new SEnvironment();
+        SEnvironment env = new SEnvironment(new HashMap<>(), null);
         env.define("false", new SBoolean(false));
         env.define("true", new SBoolean(true));
         env.define(">", new SPrimitive("org.klose.scheme.primitive.CompareFunc.greater"));
@@ -165,7 +167,7 @@ public class EvalServiceTest {
 
     @Test
     public void evalLambda() {
-        SEnvironment env = new SEnvironment();
+        SEnvironment env = new SEnvironment(new HashMap<>(), null);
         SExpression exp = SParser.parse("(lambda (x y) (* x y)");
         SProcedure procedure = (SProcedure) eval(exp, env);
         assertNotNull(procedure);
