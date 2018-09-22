@@ -9,23 +9,23 @@ import java.util.HashMap;
 
 import static junit.framework.Assert.assertEquals;
 
-public class SEnvironmentTest {
+public class SFrameTest {
 
     @Rule
     public ExpectedException exceptionRule = ExpectedException.none();
 
     @Test
     public void defineVariable() {
-        SEnvironment env = new SEnvironment(new HashMap<>(), null);
+        SFrame env = new SFrame(new HashMap<>(), null);
         env.define("x", new SNumber(100));
         assertEquals(100, env.lookup("x").getValue());
     }
 
     @Test
     public void defineVariableInOutSideEnv() {
-        SEnvironment env1 = new SEnvironment(new HashMap<>(), null);
+        SFrame env1 = new SFrame(new HashMap<>(), null);
         env1.define("x", new SNumber(100));
-        SEnvironment env2 = new SEnvironment(new HashMap<>(), env1);
+        SFrame env2 = new SFrame(new HashMap<>(), env1);
         env2.define("x", new SNumber(200));
         assertEquals(100,
                 env1.lookup("x").getValue());
@@ -36,7 +36,7 @@ public class SEnvironmentTest {
 
     @Test
     public void assignVariable() {
-        SEnvironment env = new SEnvironment(new HashMap<>(), null);
+        SFrame env = new SFrame(new HashMap<>(), null);
         env.define("x", new SNumber(100));
         env.assign("x", new SNumber(200));
         assertEquals(200,
@@ -47,15 +47,15 @@ public class SEnvironmentTest {
     public void assignVariableError() {
         exceptionRule.expect(RuntimeException.class);
         exceptionRule.expectMessage("not found assigned variable");
-        SEnvironment env = new SEnvironment(new HashMap<>(), null);
+        SFrame env = new SFrame(new HashMap<>(), null);
         env.assign("x", new SNumber(200));
     }
 
     @Test
     public void assignVariableInOutSideEnv() {
-        SEnvironment env1 = new SEnvironment(new HashMap<>(), null);
+        SFrame env1 = new SFrame(new HashMap<>(), null);
         env1.define("x", new SNumber(100));
-        SEnvironment env2 = new SEnvironment(new HashMap<>(), null);
+        SFrame env2 = new SFrame(new HashMap<>(), null);
         env2.define("x", new SNumber(200));
         env1.assign("x", new SNumber(300));
 

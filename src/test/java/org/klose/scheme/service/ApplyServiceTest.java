@@ -1,7 +1,9 @@
 package org.klose.scheme.service;
 
 import org.junit.Test;
-import org.klose.scheme.model.SEnvironment;
+import org.klose.scheme.exception.IllegalExpressionException;
+import org.klose.scheme.exception.WrongArgumentNumberException;
+import org.klose.scheme.model.SFrame;
 import org.klose.scheme.model.SExpression;
 import org.klose.scheme.model.SProcedure;
 import org.klose.scheme.type.SNumber;
@@ -21,7 +23,7 @@ import static org.klose.scheme.service.EvalService.eval;
 public class ApplyServiceTest {
 
     @Test
-    public void primitiveApply() {
+    public void primitiveApply() throws IllegalExpressionException, WrongArgumentNumberException {
         SPrimitive func = new SPrimitive("org.klose.scheme.primitive.AddFunc.add");
         SObject[] args = new SNumber[]{new SNumber(0.1d), new SNumber(10),
                 new SNumber(100L), new SNumber(1.0f)};
@@ -31,8 +33,8 @@ public class ApplyServiceTest {
     }
 
     @Test
-    public void compositeApply() {
-        SEnvironment environment = InitEnv.init();
+    public void compositeApply() throws IllegalExpressionException, WrongArgumentNumberException {
+        SFrame environment = InitEnv.init();
         List<String> parameters = new ArrayList<>();
         parameters.add("x");
         parameters.add("y");
@@ -44,8 +46,8 @@ public class ApplyServiceTest {
     }
 
     @Test
-    public void anonymousApply() {
-        SEnvironment env = InitEnv.init();
+    public void anonymousApply() throws IllegalExpressionException, WrongArgumentNumberException {
+        SFrame env = InitEnv.init();
         SExpression exp = SParser.parse("(lambda (x y) (* 2 (+ x y) x y)");
         SProcedure procedure = (SProcedure) eval(exp, env);
         SObject result = apply(procedure, new SNumber[]{new SNumber(100), new SNumber(200)});

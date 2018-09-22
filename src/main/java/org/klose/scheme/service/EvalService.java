@@ -2,8 +2,10 @@ package org.klose.scheme.service;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
-import org.klose.scheme.model.SEnvironment;
+import org.klose.scheme.exception.IllegalExpressionException;
+import org.klose.scheme.exception.WrongArgumentNumberException;
 import org.klose.scheme.model.SExpression;
+import org.klose.scheme.model.SFrame;
 import org.klose.scheme.model.SProcedure;
 import org.klose.scheme.type.SBoolean;
 import org.klose.scheme.type.SNumber;
@@ -17,7 +19,8 @@ import java.util.List;
 
 public class EvalService {
 
-    public static SObject eval(SExpression exp, SEnvironment env) {
+    public static SObject eval(SExpression exp, SFrame env)
+            throws IllegalExpressionException, WrongArgumentNumberException {
         if (exp == null)
             throw new IllegalArgumentException("expression can not be null");
         if (env == null)
@@ -34,10 +37,13 @@ public class EvalService {
                 return env.lookup(str);
         }
 
-        SExpression s0 = exp.getChildren().get(0);
-        switch (s0.getValue()) {
+        SExpression operator = exp.getChildren().get(0);
+        if (operator == null)
+            throw new IllegalExpressionException("operator can not be null");
+
+        switch (operator.getValue()) {
             case "quote":
-                return exp.getChildren().get(1);
+                return evalQuote(exp);
             case "if":
                 return evalIf(exp, env);
             case "define":
@@ -50,26 +56,48 @@ public class EvalService {
                 break;
         }
 
-        SProcedure procedure = (SProcedure) EvalService.eval(s0, env);
+        SProcedure procedure = (SProcedure) EvalService.eval(operator, env);
         if (procedure != null)
             return ApplyService.apply(procedure, listOfOperands(exp, env));
         else
-            throw new RuntimeException("\"Unknown expression type -- EVAL " + exp);
+            throw new IllegalExpressionException("\"Unknown expression type -- EVAL" + exp);
     }
 
-    private static SObject[] listOfOperands(SExpression exp, SEnvironment env) {
-        if (!exp.getChildren().isEmpty()) {
-            int paramSize = exp.getChildren().size() - 1;
-            SObject[] operands = new SObject[paramSize];
-            for (int i = 0; i < paramSize; i++)
-                operands[i] = EvalService.eval(exp.getChildren().get(i + 1), env);
+    private static SObject[] listOfOperands(SExpression exp, SFrame env)
+            throws IllegalExpressionException, WrongArgumentNumberException {
+        assert (exp != null);
+        assert (env != null);
 
-            return operands;
-        } else
-            throw new IllegalArgumentException("expression is not procedure");
+        if (exp.getChildren() == null || exp.getChildren().isEmpty())
+            throw new IllegalExpressionException("expression is not procedure");
+
+        int paramSize = exp.getChildren().size() - 1;
+        SObject[] operands = new SObject[paramSize];
+        for (int i = 0; i < paramSize; i++)
+            operands[i] = EvalService.eval(exp.getChildren().get(i + 1), env);
+
+        return operands;
     }
 
-    private static SObject evalIf(SExpression exp, SEnvironment env) {
+    private static SObject evalQuote(SExpression exp) throws WrongArgumentNumberException {
+        assert (exp != null);
+        assert (!exp.getChildren().isEmpty());
+
+        if (exp.getChildren().size() != 2)
+            throw new WrongArgumentNumberException(2, exp.getChildren().size(), "quote");
+
+        return exp.getChildren().get(1);
+
+    }
+
+    private static SObject evalIf(SExpression exp, SFrame env)
+            throws IllegalExpressionException, WrongArgumentNumberException {
+        assert (exp != null);
+        assert (env != null);
+
+        if (exp.getChildren().size() < 3)
+            throw new WrongArgumentNumberException(3, exp.getChildren().size(), "evalIf");
+
         SExpression predicate = exp.getChildren().get(1);
         SBoolean check = (SBoolean) EvalService.eval(predicate, env);
         if (check.getValue()) {
@@ -84,21 +112,34 @@ public class EvalService {
         }
     }
 
-    private static SString evalDefine(SExpression exp, SEnvironment env) {
+    private static SString evalDefine(SExpression exp, SFrame env)
+            throws IllegalExpressionException, WrongArgumentNumberException {
         String var = exp.getChildren().get(1).getValue();
         SObject value = EvalService.eval(exp.getChildren().get(2), env);
         env.define(var, value);
         return new SString("ok");
     }
 
-    private static SString evalAssign(SExpression exp, SEnvironment env) {
+    private static SString evalAssign(SExpression exp, SFrame env)
+            throws IllegalExpressionException, WrongArgumentNumberException {
+        assert (exp != null);
+        assert (env != null);
+        if (exp.getChildren().size() != 3)
+            throw new WrongArgumentNumberException(3, exp.getChildren().size(), "evalAssign");
+
         String var = exp.getChildren().get(1).getValue();
         SObject value = EvalService.eval(exp.getChildren().get(2), env);
         env.assign(var, value);
         return new SString("ok");
     }
 
-    private static SProcedure evalLambda(SExpression exp, SEnvironment env) {
+    private static SProcedure evalLambda(SExpression exp, SFrame env) throws WrongArgumentNumberException {
+        assert (exp != null);
+        assert (env != null);
+
+        if (exp.getChildren().size() != 3)
+            throw new WrongArgumentNumberException(3, exp.getChildren().size(), "evalLambda");
+
         SExpression body = exp.getChildren().get(2);
         SExpression parametersExp = exp.getChildren().get(1);
         List<String> parameters = new ArrayList<>();

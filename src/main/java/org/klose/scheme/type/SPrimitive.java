@@ -8,6 +8,7 @@ public class SPrimitive extends SProcedure {
 
     public SPrimitive(String value) {
         super(null, null, null);
+
         if (StringUtils.isEmpty(value))
             throw new IllegalArgumentException("primitive function string can not be empty");
         this.value = value;

@@ -1,6 +1,5 @@
 package org.klose.scheme.model;
 
-import org.apache.commons.lang3.StringUtils;
 import org.klose.scheme.type.SObject;
 
 import java.util.ArrayList;
@@ -15,6 +14,9 @@ public class SExpression implements SObject {
     private final SExpression parent;
 
     public SExpression(String str, SExpression parent) {
+        if (str == null)
+            throw new IllegalArgumentException("expression str can not be null");
+
         this.str = str;
         this.parent = parent;
     }
@@ -25,7 +27,7 @@ public class SExpression implements SObject {
 
     @Override
     public String getValue() {
-        return StringUtils.isEmpty(str) ? toString() : str;
+        return children.isEmpty() ? str : toString();
     }
 
 

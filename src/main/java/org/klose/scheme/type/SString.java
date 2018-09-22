@@ -4,6 +4,9 @@ public class SString implements SObject {
     private final String value;
 
     public SString(String value) {
+        if (value == null)
+            throw new IllegalArgumentException("SString value can not be null");
+
         this.value = value;
     }
 

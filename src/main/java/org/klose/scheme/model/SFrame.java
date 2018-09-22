@@ -2,31 +2,26 @@ package org.klose.scheme.model;
 
 import org.klose.scheme.type.SObject;
 
-import java.util.Collections;
 import java.util.Map;
 
-public class SEnvironment {
+public class SFrame {
     private final Map<String, SObject> vars;
-    private final SEnvironment parent;
+    private final SFrame parent;
 
 
-    public SEnvironment(Map<String, SObject> vars, SEnvironment parent) {
+    public SFrame(Map<String, SObject> vars, SFrame parent) {
+        if (vars == null)
+            throw new IllegalArgumentException("variable map of a frame can not be null");
+
         this.vars = vars;
         this.parent = parent;
     }
 
-    public Map<String, SObject> getVars() {
-        return Collections.unmodifiableMap(vars);
-    }
-
-    public SEnvironment getParent() {
-        return parent;
-    }
 
     public SObject lookup(String var) {
         if (vars.containsKey(var))
             return vars.get(var);
-        else if(parent != null)
+        else if (parent != null)
             return parent.lookup(var);
         else
             throw new RuntimeException("not found variable");
@@ -47,7 +42,7 @@ public class SEnvironment {
         }
     }
 
-    public SEnvironment extend(Map<String, SObject> vars) {
-        return new SEnvironment(vars, this);
+    public SFrame extend(Map<String, SObject> vars) {
+        return new SFrame(vars, this);
     }
 }

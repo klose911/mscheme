@@ -1,6 +1,8 @@
 package org.klose.scheme.func;
 
 import org.junit.Test;
+import org.klose.scheme.exception.WrongArgumentNumberException;
+import org.klose.scheme.exception.WrongArgumentTypeException;
 import org.klose.scheme.type.SNumber;
 
 import static junit.framework.Assert.assertTrue;
@@ -9,7 +11,7 @@ import static org.klose.scheme.primitive.CompareFunc.*;
 public class CompareFuncTest {
 
     @Test
-    public void equalsCompare() {
+    public void equalsCompare() throws WrongArgumentNumberException, WrongArgumentTypeException {
         assertTrue(eq(new SNumber(1000.0d),
                 new SNumber(1000.0d)).getValue());
         assertTrue(eq(new SNumber(1000.0d),
@@ -33,7 +35,7 @@ public class CompareFuncTest {
     }
 
     @Test
-    public void greaterCompare() {
+    public void greaterCompare() throws WrongArgumentNumberException, WrongArgumentTypeException {
         assertTrue(greater(new SNumber(1000.1d),
                 new SNumber(1000.0d)).getValue());
         assertTrue(greater(new SNumber(1000.1d),
@@ -57,7 +59,7 @@ public class CompareFuncTest {
     }
 
     @Test
-    public void lessCompare() {
+    public void lessCompare() throws WrongArgumentNumberException, WrongArgumentTypeException {
         assertTrue(less(new SNumber(1000.0d),
                 new SNumber(1000.1d)).getValue());
         assertTrue(less(new SNumber(1000.0d),

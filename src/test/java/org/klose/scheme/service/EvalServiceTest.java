@@ -1,7 +1,9 @@
 package org.klose.scheme.service;
 
 import org.junit.Test;
-import org.klose.scheme.model.SEnvironment;
+import org.klose.scheme.exception.IllegalExpressionException;
+import org.klose.scheme.exception.WrongArgumentNumberException;
+import org.klose.scheme.model.SFrame;
 import org.klose.scheme.model.SExpression;
 import org.klose.scheme.model.SProcedure;
 import org.klose.scheme.type.*;
@@ -15,62 +17,62 @@ import static org.klose.scheme.service.EvalService.eval;
 public class EvalServiceTest {
 
     @Test
-    public void intValue() {
+    public void intValue() throws IllegalExpressionException, WrongArgumentNumberException {
         final Integer i = 21;
         SExpression e = new SExpression(i.toString(), null);
-        SObject o = eval(e, new SEnvironment(new HashMap<>(), null));
+        SObject o = eval(e, new SFrame(new HashMap<>(), null));
         assertTrue(o instanceof SNumber);
         assertEquals(i, o.getValue());
     }
 
     @Test
-    public void floatValue() {
+    public void floatValue() throws IllegalExpressionException, WrongArgumentNumberException {
         final Float f = 20.1f;
         SExpression e = new SExpression(f.toString(), null);
-        SObject o = eval(e, new SEnvironment(new HashMap<>(), null));
+        SObject o = eval(e, new SFrame(new HashMap<>(), null));
         assertTrue(o instanceof SNumber);
         assertEquals(f, o.getValue());
     }
 
     @Test
-    public void longValue() {
+    public void longValue() throws IllegalExpressionException, WrongArgumentNumberException {
         final Long l = 100L;
         SExpression e = new SExpression("100L", null);
-        SObject o = eval(e, new SEnvironment(new HashMap<>(), null));
+        SObject o = eval(e, new SFrame(new HashMap<>(), null));
         assertTrue(o instanceof SNumber);
         assertEquals(l, o.getValue());
     }
 
     @Test
-    public void doubleValue() {
+    public void doubleValue() throws IllegalExpressionException, WrongArgumentNumberException {
         final Double v = 20.1d;
         SExpression e = new SExpression("20.1d", null);
-        SObject o = eval(e, new SEnvironment(new HashMap<>(), null));
+        SObject o = eval(e, new SFrame(new HashMap<>(), null));
         assertTrue(o instanceof SNumber);
         assertEquals(v, o.getValue());
     }
 
     @Test
-    public void stringValue() {
+    public void stringValue() throws IllegalExpressionException, WrongArgumentNumberException {
         String s = "hello 'world'\n";
         SExpression e = new SExpression("\"" + s + "\"", null);
-        SObject o = eval(e, new SEnvironment(new HashMap<>(),null));
+        SObject o = eval(e, new SFrame(new HashMap<>(),null));
         assertTrue(o instanceof SString);
         assertEquals(s, o.getValue());
     }
 
     @Test
-    public void emptyStringValue() {
+    public void emptyStringValue() throws IllegalExpressionException, WrongArgumentNumberException {
         String s = "";
         SExpression e = new SExpression("\"" + s + "\"", null);
-        SObject o = eval(e, new SEnvironment(new HashMap<>(), null));
+        SObject o = eval(e, new SFrame(new HashMap<>(), null));
         assertTrue(o instanceof SString);
         assertEquals(s, o.getValue());
     }
 
     @Test
-    public void lookUpVar() {
-        SEnvironment env = new SEnvironment(new HashMap<>(), null);
+    public void lookUpVar() throws IllegalExpressionException, WrongArgumentNumberException {
+        SFrame env = new SFrame(new HashMap<>(), null);
         env.define("x", new SNumber(100));
         SExpression exp = new SExpression("x", null);
         SObject o = eval(exp, env);
@@ -78,8 +80,8 @@ public class EvalServiceTest {
     }
 
     @Test
-    public void evalTrue() {
-        SEnvironment env = new SEnvironment(new HashMap<>(), null);
+    public void evalTrue() throws IllegalExpressionException, WrongArgumentNumberException {
+        SFrame env = new SFrame(new HashMap<>(), null);
         env.define("true", new SBoolean(true));
         SObject o = eval(new SExpression("true", null), env);
         assertTrue(o instanceof SBoolean);
@@ -87,8 +89,8 @@ public class EvalServiceTest {
     }
 
     @Test
-    public void evalFalse() {
-        SEnvironment env = new SEnvironment(new HashMap<>(), null);
+    public void evalFalse() throws IllegalExpressionException, WrongArgumentNumberException {
+        SFrame env = new SFrame(new HashMap<>(), null);
         env.define("false", new SBoolean(false));
         SObject o = eval(new SExpression("false", null), env);
         assertTrue(o instanceof SBoolean);
@@ -96,8 +98,8 @@ public class EvalServiceTest {
     }
 
     @Test
-    public void evalQuote() {
-        SEnvironment env = new SEnvironment(new HashMap<>(), null);
+    public void evalQuote() throws IllegalExpressionException, WrongArgumentNumberException {
+        SFrame env = new SFrame(new HashMap<>(), null);
         SExpression exp = SParser.parse("(quote (a b))");
         SObject o = eval(exp, env);
         assertTrue(o instanceof SExpression);
@@ -105,8 +107,8 @@ public class EvalServiceTest {
     }
 
     @Test
-    public void evalDefine() {
-        SEnvironment env = new SEnvironment(new HashMap<>(), null);
+    public void evalDefine() throws IllegalExpressionException, WrongArgumentNumberException {
+        SFrame env = new SFrame(new HashMap<>(), null);
         SExpression exp = SParser.parse("(define a 100)");
         SObject o = eval(exp, env);
         assertTrue(o instanceof SString);
@@ -115,8 +117,8 @@ public class EvalServiceTest {
     }
 
     @Test
-    public void evalAssign() {
-        SEnvironment env = new SEnvironment(new HashMap<>(), null);
+    public void evalAssign() throws IllegalExpressionException, WrongArgumentNumberException {
+        SFrame env = new SFrame(new HashMap<>(), null);
         SExpression exp = SParser.parse("(define a 100)");
         eval(exp, env);
         SExpression exp1 = SParser.parse("(set! a 200)");
@@ -127,8 +129,8 @@ public class EvalServiceTest {
     }
 
     @Test
-    public void evalIfWithConsequent() {
-        SEnvironment env = new SEnvironment(new HashMap<>(), null);
+    public void evalIfWithConsequent() throws IllegalExpressionException, WrongArgumentNumberException {
+        SFrame env = new SFrame(new HashMap<>(), null);
         env.define("false", new SBoolean(false));
         env.define("true", new SBoolean(true));
         env.define(">", new SPrimitive("org.klose.scheme.primitive.CompareFunc.greater"));
@@ -140,8 +142,8 @@ public class EvalServiceTest {
     }
 
     @Test
-    public void evalIfWithAlternative() {
-        SEnvironment env = new SEnvironment(new HashMap<>(), null);
+    public void evalIfWithAlternative() throws IllegalExpressionException, WrongArgumentNumberException {
+        SFrame env = new SFrame(new HashMap<>(), null);
         env.define("false", new SBoolean(false));
         env.define("true", new SBoolean(true));
         env.define(">", new SPrimitive("org.klose.scheme.primitive.CompareFunc.greater"));
@@ -153,8 +155,8 @@ public class EvalServiceTest {
     }
 
     @Test
-    public void evalIfWithoutAlternative() {
-        SEnvironment env = new SEnvironment(new HashMap<>(), null);
+    public void evalIfWithoutAlternative() throws IllegalExpressionException, WrongArgumentNumberException {
+        SFrame env = new SFrame(new HashMap<>(), null);
         env.define("false", new SBoolean(false));
         env.define("true", new SBoolean(true));
         env.define(">", new SPrimitive("org.klose.scheme.primitive.CompareFunc.greater"));
@@ -166,8 +168,8 @@ public class EvalServiceTest {
     }
 
     @Test
-    public void evalLambda() {
-        SEnvironment env = new SEnvironment(new HashMap<>(), null);
+    public void evalLambda() throws IllegalExpressionException, WrongArgumentNumberException {
+        SFrame env = new SFrame(new HashMap<>(), null);
         SExpression exp = SParser.parse("(lambda (x y) (* x y)");
         SProcedure procedure = (SProcedure) eval(exp, env);
         assertNotNull(procedure);
@@ -175,6 +177,6 @@ public class EvalServiceTest {
         assertEquals("x", procedure.getParameters().get(0));
         assertEquals("y", procedure.getParameters().get(1));
         assertEquals(SParser.parse("(* x y)").toString(), procedure.getBody().toString());
-        assertEquals(env, procedure.getContext());
+        assertEquals(env, procedure.getEnvironment());
     }
 }

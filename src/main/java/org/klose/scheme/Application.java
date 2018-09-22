@@ -1,8 +1,8 @@
 package org.klose.scheme;
 
 
-import org.klose.scheme.model.SEnvironment;
 import org.klose.scheme.model.SExpression;
+import org.klose.scheme.model.SFrame;
 import org.klose.scheme.service.EvalService;
 import org.klose.scheme.type.SObject;
 import org.klose.scheme.utils.InitEnv;
@@ -19,7 +19,7 @@ public class Application {
     public static void main(String[] args) {
         ExecutorService executor = Executors.newSingleThreadExecutor();
         BufferedReader console = new BufferedReader(new InputStreamReader(System.in));
-        SEnvironment rootEnv = InitEnv.init();
+        SFrame rootEnv = InitEnv.init();
         final Runnable repl = () -> {
             String src;
             while (true) {
@@ -36,7 +36,7 @@ public class Application {
                         System.err.println("empty cmd !");
                     }
                 } catch (Throwable e) {
-                    e.printStackTrace();
+                    System.err.println(e.getMessage());
                 }
             }
         };
