@@ -8,6 +8,7 @@ public class SPrimitive extends SProcedure {
 
     public SPrimitive(String value) {
         super(null, null, null);
+
         if (StringUtils.isEmpty(value))
             throw new IllegalArgumentException("primitive function string can not be empty");
         this.value = value;
@@ -24,5 +25,12 @@ public class SPrimitive extends SProcedure {
 
     public String getMethod() {
         return value.substring(value.lastIndexOf(".") + 1);
+    }
+
+    @Override
+    public String toString() {
+        return "Primitive{" +
+                "value='" + value + '\'' +
+                '}';
     }
 }

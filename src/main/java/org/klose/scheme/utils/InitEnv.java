@@ -1,6 +1,6 @@
 package org.klose.scheme.utils;
 
-import org.klose.scheme.model.SEnvironment;
+import org.klose.scheme.model.SFrame;
 import org.klose.scheme.type.SPrimitive;
 import org.klose.scheme.type.SObject;
 
@@ -40,7 +40,7 @@ public class InitEnv {
         builtinMap.put(EQUALS, new SPrimitive("org.klose.scheme.primitive.BooleanFunc.equalsTo"));
     }
 
-    public static SEnvironment init() {
-        return new SEnvironment(builtinMap, null);
+    public static SFrame init() {
+        return new SFrame(builtinMap, null);
     }
 }

@@ -1,7 +1,7 @@
 package org.klose.scheme.model;
 
-import org.klose.scheme.type.SPrimitive;
 import org.klose.scheme.type.SObject;
+import org.klose.scheme.type.SPrimitive;
 
 import java.util.Collections;
 import java.util.List;
@@ -9,12 +9,13 @@ import java.util.List;
 public class SProcedure implements SObject {
     private final SExpression body;
     private final List<String> parameters;
-    private final SEnvironment context;
+    private final SFrame environment;
 
-    public SProcedure(SExpression body, List<String> parameters, SEnvironment context) {
+    public SProcedure(final SExpression body, final List<String> parameters,
+                      final SFrame environment) {
         this.body = body;
         this.parameters = parameters;
-        this.context = context;
+        this.environment = environment;
     }
 
     public SExpression getBody() {
@@ -25,8 +26,8 @@ public class SProcedure implements SObject {
         return Collections.unmodifiableList(parameters);
     }
 
-    public SEnvironment getContext() {
-        return context;
+    public SFrame getEnvironment() {
+        return environment;
     }
 
     public boolean isPrimitive() {
@@ -36,5 +37,12 @@ public class SProcedure implements SObject {
     @Override
     public Object getValue() {
         throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public String toString() {
+        return "SProcedure{" +
+                "body=" + body +
+                '}';
     }
 }

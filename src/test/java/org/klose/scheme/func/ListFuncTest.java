@@ -1,6 +1,8 @@
 package org.klose.scheme.func;
 
 import org.junit.Test;
+import org.klose.scheme.exception.WrongArgumentNumberException;
+import org.klose.scheme.exception.WrongArgumentTypeException;
 import org.klose.scheme.type.*;
 
 import static junit.framework.Assert.*;
@@ -12,7 +14,7 @@ import static org.klose.scheme.primitive.PairFunc.*;
 public class ListFuncTest {
 
     @Test
-    public void nullList() {
+    public void nullList() throws WrongArgumentNumberException, WrongArgumentTypeException {
         SList list = list();
         assertEquals(NIL, list);
         assertTrue(isNull(list).getValue());
@@ -21,20 +23,20 @@ public class ListFuncTest {
     }
 
     @Test
-    public void notNullList() {
+    public void notNullList() throws WrongArgumentNumberException {
         SList list = list(NIL);
         assertFalse(isNull(list).getValue());
     }
 
     @Test
-    public void singleElementList() {
+    public void singleElementList() throws WrongArgumentNumberException, WrongArgumentTypeException {
         SList list = list(new SNumber(100));
         assertEquals(100, car(list).getValue());
         assertEquals(NIL, cdr(list));
     }
 
     @Test
-    public void multiElementsList() {
+    public void multiElementsList() throws WrongArgumentNumberException, WrongArgumentTypeException {
         SList list = list(new SNumber(10), new SNumber(20d),
                 new SBoolean(true), new SString("hello"));
         assertEquals(10, car(list).getValue());
@@ -44,7 +46,7 @@ public class ListFuncTest {
     }
 
     @Test
-    public void hierarchyList() {
+    public void hierarchyList() throws WrongArgumentNumberException, WrongArgumentTypeException {
         SList list = list(new SNumber(100),
                 list(new SBoolean(false), new SString("world")),
                 cons(new SNumber(21.f), new SNumber(-200L)));
