@@ -3,6 +3,7 @@ package org.klose.scheme.model;
 import org.klose.scheme.type.SObject;
 
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class SFrame {
     private final Map<String, SObject> vars;
@@ -44,5 +45,16 @@ public class SFrame {
 
     public SFrame extend(Map<String, SObject> vars) {
         return new SFrame(vars, this);
+    }
+
+    @Override
+    public String toString() {
+        return "SFrame{" +
+                "vars=" + vars.entrySet().stream()
+                .map(e -> "var \'" + e.getKey() + "\' value= \'"
+                        + e.getValue() + '\'')
+                .collect(Collectors.joining(System.lineSeparator())) +
+                ", parent=" + parent +
+                '}';
     }
 }

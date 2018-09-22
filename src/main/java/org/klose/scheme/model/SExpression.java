@@ -21,9 +21,6 @@ public class SExpression implements SObject {
         this.parent = parent;
     }
 
-    public String getStr() {
-        return str;
-    }
 
     @Override
     public String getValue() {

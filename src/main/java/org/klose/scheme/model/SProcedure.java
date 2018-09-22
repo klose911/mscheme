@@ -38,4 +38,11 @@ public class SProcedure implements SObject {
     public Object getValue() {
         throw new UnsupportedOperationException();
     }
+
+    @Override
+    public String toString() {
+        return "SProcedure{" +
+                "body=" + body +
+                '}';
+    }
 }

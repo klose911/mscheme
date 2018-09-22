@@ -26,4 +26,11 @@ public class SPrimitive extends SProcedure {
     public String getMethod() {
         return value.substring(value.lastIndexOf(".") + 1);
     }
+
+    @Override
+    public String toString() {
+        return "Primitive{" +
+                "value='" + value + '\'' +
+                '}';
+    }
 }
