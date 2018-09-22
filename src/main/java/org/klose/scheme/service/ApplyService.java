@@ -4,6 +4,7 @@ package org.klose.scheme.service;
 import org.apache.commons.lang3.StringUtils;
 import org.klose.scheme.exception.IllegalExpressionException;
 import org.klose.scheme.exception.WrongArgumentNumberException;
+import org.klose.scheme.exception.WrongArgumentTypeException;
 import org.klose.scheme.model.SFrame;
 import org.klose.scheme.model.SProcedure;
 import org.klose.scheme.type.SObject;
@@ -51,8 +52,12 @@ class ApplyService {
                 try {
                     return (SObject) o.get().invoke(null, new Object[]{arguments});
                 } catch (IllegalAccessException | InvocationTargetException e) {
-                    throw new IllegalExpressionException("Class: " + func.getClazz()
-                            + " Method: " + func.getMethod() + "invoked failed");
+                    Throwable t = e.getCause();
+                    if (t instanceof WrongArgumentNumberException
+                            || t instanceof WrongArgumentTypeException)
+                        throw new IllegalExpressionException(t.getMessage());
+                    else
+                        throw new IllegalExpressionException(e);
                 }
             } else {
                 throw new IllegalExpressionException("primitive operator can not be found");
@@ -67,11 +72,11 @@ class ApplyService {
         assert (procedure != null);
         assert (arguments != null);
 
-        if(procedure.getBody() == null)
+        if (procedure.getBody() == null)
             throw new IllegalExpressionException("procedure body can not be null");
-        if(procedure.getParameters() == null)
+        if (procedure.getParameters() == null)
             throw new IllegalExpressionException("procedure parameters can not be null");
-        if(procedure.getEnvironment() == null)
+        if (procedure.getEnvironment() == null)
             throw new IllegalExpressionException("procedure environment can not be null");
         if (procedure.getParameters().size() != arguments.length)
             throw new WrongArgumentNumberException(procedure.getParameters().size(),
