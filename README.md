@@ -48,12 +48,12 @@ java -jar target/mscheme-exec.jar
 - `bool`: `and`, `or`, `not`, `eq`
 
 ## TODO
-1. support begin expressions
-2. support cond expressions 
-3. support continuation mechanism
-4. support syntax macros 
+1. support `begin` expressions
+2. support `cond` expressions 
+3. support `continuation` mechanism
+4. support syntax `macros` 
 
 ## Known Issues
-1. input with new line character can not be treated as a single expression
-2. lambda expression must be used to define procedure, like `(define add (lambda (x y) (+ x y))`.  
+1. input with `newline` character will not be treated as a single expression
+2. `lambda` expression must be used to define procedure, like `(define add (lambda (x y) (+ x y))`.  
    The format of `(define (add x y)  (+ x y))` should be supported 
