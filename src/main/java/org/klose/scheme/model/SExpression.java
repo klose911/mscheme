@@ -7,6 +7,7 @@ import java.util.List;
 
 import static java.util.stream.Collectors.joining;
 
+
 public class SExpression implements SObject {
 
     private final String str;
@@ -53,7 +54,7 @@ public class SExpression implements SObject {
         return builder.toString();
     }
 
-    public boolean hasNoneChild() {
+    public boolean isSelfEval() {
         return children.isEmpty();
     }
 }

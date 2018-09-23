@@ -17,6 +17,13 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
+/**
+ * Apply takes two arguments, a procedure and a list of arguments to which the procedure should be applied.
+ *
+ * Apply classifies procedures into two kinds:
+ * 1. primitive: implemented directly by Java Code and called by Java Reflection
+ * 2. compound: defined by lambda expression and sequentially evaluate the body expressions
+ */
 class ApplyService {
 
     static SObject apply(SProcedure procedure, SObject[] arguments)
@@ -27,26 +34,30 @@ class ApplyService {
             throw new IllegalArgumentException("arguments can not be null");
 
         if (procedure.isPrimitive()) {
-            return applyPrimitive((SPrimitive) procedure, arguments);
+            return primitiveApply((SPrimitive) procedure, arguments);
         } else
-            return applyComposite(procedure, arguments);
+            return compoundApply(procedure, arguments);
     }
 
-    private static SObject applyPrimitive(SPrimitive func, SObject[] arguments)
+    private static SObject primitiveApply(SPrimitive func, SObject[] arguments)
             throws IllegalExpressionException {
         assert (func != null);
         assert (arguments != null);
 
-        if (StringUtils.isEmpty(func.getClazz()))
+        //@TODO ugly, might be replaced by Java8 Lambda function
+        String clazzName = func.getClazz(); // "org.klose.scheme.primitive.AddFunc"
+        if (StringUtils.isEmpty(clazzName))
             throw new IllegalArgumentException("primitive class can not empty");
-        if (StringUtils.isEmpty(func.getMethod()))
+
+        String methodName = func.getMethod(); //"add"
+        if (StringUtils.isEmpty(methodName))
             throw new IllegalArgumentException("primitive method can not empty");
 
         Class clazz;
         try {
-            clazz = Class.forName(func.getClazz());
+            clazz = Class.forName(clazzName);
             Optional<Method> o = Arrays.stream(clazz.getMethods())
-                    .filter(x -> x.getName().equals(func.getMethod()))
+                    .filter(x -> methodName.equals(x.getName()))
                     .findFirst();
             if (o.isPresent()) {
                 try {
@@ -63,11 +74,11 @@ class ApplyService {
                 throw new IllegalExpressionException("primitive operator can not be found");
             }
         } catch (ClassNotFoundException e) {
-            throw new IllegalExpressionException("Class: " + func.getClazz() + " not found");
+            throw new IllegalExpressionException("Class: " + clazzName + " not found");
         }
     }
 
-    private static SObject applyComposite(SProcedure procedure, SObject[] arguments)
+    private static SObject compoundApply(SProcedure procedure, SObject[] arguments)
             throws WrongArgumentNumberException, IllegalExpressionException {
         assert (procedure != null);
         assert (arguments != null);
@@ -82,6 +93,10 @@ class ApplyService {
             throw new WrongArgumentNumberException(procedure.getParameters().size(),
                     arguments.length, "anoymous procedure");
 
+        // The environment for the evaluation of the body of a compound procedure
+        // is constructed by extending the base environment carried by the procedure
+        // to include a frame that binds the parameters of the procedure
+        // to the arguments to which the procedure is to be applied.
         Map<String, SObject> vars = new HashMap<>();
         for (int i = 0; i < arguments.length; i++)
             vars.put(procedure.getParameters().get(i), arguments[i]);

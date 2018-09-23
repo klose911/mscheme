@@ -6,6 +6,9 @@ import org.klose.scheme.type.SPrimitive;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * Compound procedures are constructed from parameters, procedure bodies, and environments
+ */
 public class SProcedure implements SObject {
     private final SExpression body;
     private final List<String> parameters;
