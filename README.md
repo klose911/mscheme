@@ -1,12 +1,12 @@
 # mscheme
-My first toy scheme intepreter written by java 
+My first scheme intepreter. This toy is written by java 
 
 ## Concepts
 
 ### S-expression
-mscheme use [S-expression] (https://en.wikipedia.org/wiki/S-expression) to represent [AST](https://en.wikipedia.org/wiki/Abstract_syntax_tree) 
+mscheme use ![S-expression] (https://en.wikipedia.org/wiki/S-expression) to represent [AST](https://en.wikipedia.org/wiki/Abstract_syntax_tree) 
 
-For exampple, the `Sexpression` of `(+ 1 2 (* 3 4))` behind `SExpression.java` : 
+For exampple, the `Sexpression` of `(+ 1 2 (* 3 4))` behind `SExpression.java` can be shown as: 
 
 ![AST_demo](http://upload.wikimedia.org/wikipedia/commons/thumb/1/11/S-expression_tree.svg/220px-S-expression_tree.svg.png)
 
@@ -43,11 +43,17 @@ java -jar target/mscheme-exec.jar
 - `lambda`
 
 3. primitive procedures
-- `bool`: `and`, `or`, `not`, `eq`
 - `number`: `+`, `-`, `*`, `/`, `>`, `<`, `=`
 - `pair/list`: `cons`, `car`, `cdr`, `list`, `null?`
+- `bool`: `and`, `or`, `not`, `eq`
 
 ## TODO
-1. support cond expressions 
-2. support begin expressions
-3. support read multiple lines from console
+1. support begin expressions
+2. support cond expressions 
+3. support continuation mechanism
+4. support syntax macros 
+
+## Known Issues
+1. input with new line character can not be treated as a single expression
+2. lambda expression must be used to define procedure, like `(define add (lambda (x y) (+ x y))`.  
+   The format of `(define (add x y)  (+ x y))` should be supported 
