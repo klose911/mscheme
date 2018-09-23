@@ -40,6 +40,11 @@ public class InitEnv {
         builtinMap.put(EQUALS, new SPrimitive("org.klose.scheme.primitive.BooleanFunc.equalsTo"));
     }
 
+    /**
+     * initialize root environment with primitive functions
+     * and literals(<code>true</>, <code>false</>, <code>nil</code>)
+     * @return initialized root environment
+     */
     public static SFrame init() {
         return new SFrame(builtinMap, null);
     }

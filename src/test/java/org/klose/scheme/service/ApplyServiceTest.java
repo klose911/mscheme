@@ -48,7 +48,7 @@ public class ApplyServiceTest {
     @Test
     public void anonymousApply() throws IllegalExpressionException, WrongArgumentNumberException {
         SFrame env = InitEnv.init();
-        SExpression exp = SParser.parse("(lambda (x y) (* 2 (+ x y) x y)");
+        SExpression exp = SParser.parse("(lambda (x y) (* 2 (+ x y) x y))");
         SProcedure procedure = (SProcedure) eval(exp, env);
         SObject result = apply(procedure, new SNumber[]{new SNumber(100), new SNumber(200)});
         assertTrue(result instanceof SNumber);

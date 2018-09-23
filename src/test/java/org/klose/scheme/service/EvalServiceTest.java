@@ -170,7 +170,7 @@ public class EvalServiceTest {
     @Test
     public void evalLambda() throws IllegalExpressionException, WrongArgumentNumberException {
         SFrame env = new SFrame(new HashMap<>(), null);
-        SExpression exp = SParser.parse("(lambda (x y) (* x y)");
+        SExpression exp = SParser.parse("(lambda (x y) (* x y))");
         SProcedure procedure = (SProcedure) eval(exp, env);
         assertNotNull(procedure);
         assertEquals(2, procedure.getParameters().size());
