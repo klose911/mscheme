@@ -5,6 +5,10 @@ import org.klose.scheme.type.SObject;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+/**
+ * An environment is a sequence of frames,
+ * where each frame is a table of bindings that associate variables with their corresponding values
+ */
 public class SFrame {
     private final Map<String, SObject> vars;
     private final SFrame parent;
@@ -19,6 +23,11 @@ public class SFrame {
     }
 
 
+    /**
+     *
+     * @param var
+     * @return
+     */
     public SObject lookup(String var) {
         if (vars.containsKey(var))
             return vars.get(var);

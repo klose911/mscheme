@@ -39,6 +39,12 @@ public class SNumberUtils {
         return false;
     }
 
+    /**
+     * downcast a SObject array into SNumber array
+     * @param args Sobject array
+     * @return downcasted SNumber array
+     * @throws WrongArgumentTypeException if args contains an element which can not be downcasted to SNumber
+     */
     public static SNumber[] convert(SObject[] args) throws WrongArgumentTypeException {
         if (args == null)
             throw new IllegalArgumentException("args can not be null");

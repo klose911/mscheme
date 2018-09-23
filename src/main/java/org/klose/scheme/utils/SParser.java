@@ -5,23 +5,64 @@ import org.klose.scheme.exception.IllegalExpressionException;
 import org.klose.scheme.model.SExpression;
 
 import java.util.LinkedList;
-import java.util.List;
 import java.util.StringTokenizer;
 
 /**
  * parse input into several SExpression
+ *
+ * (define add (lambda (x y) (+ x y)) -> SExpression S0
+ *
+ *                            +-----------+
+ *                            |           |
+ *                            |     S0    |
+ *                            +-----+-----+
+ *                                  |
+ *      +--------------------------------------------------------+
+ *      |                           |                            |
+ * +----v-----+                +----v-----+                +-----v----+
+ * |          |                |          |                |          |
+ * | "define" |                |   "add"  |                |    S1    |
+ * +----------+                +----------+                +----------+
+ *                                                               |
+ *                               +------------------------------------
+ *                               |                  |                |
+ *                          +----v-----+      +-----v----+     +-----v-----+
+ *                          |          |      |          |     |           |
+ *                          | "lambda" |      |   S11    |     |    S12    |
+ *                          +----------+      +----------+     +-----------+
+ *                                                  |                |
+ *                      +----------------+-----------                +----------------+----------------+
+ *                      |                |                           |                |                |
+ *                 +----v-----+    +-----v------+              +-----v-----+    +-----v-----+    +-----v-----+
+ *                 |          |    |            |              |           |    |           |    |           |
+ *                 |   "x"    |    |     "y"    |              |    "+"    |    |    "x"    |    |    "y"    |
+ *                 +----------+    +------------+              +-----------+    +-----------+    +-----------+
  */
+
 public class SParser {
     private static final String START_TOKEN = "(";
     private static final String START_TOKEN_REPLACED = " ( ";
     private static final String END_TOKEN = ")";
     private static final String END_TOKEN_REPLACED = " ) ";
-    //private final static Logger logger = LoggerFactory.getLogger(SParser.class);
 
-    private static List<String> tokenize(String text) {
+    /**
+     * parse String into SExpression
+     *
+     * @param code string to parse
+     * @return parsed SExpression
+     * @throws IllegalExpressionException illegal S Expression
+     */
+    public static SExpression parse(String code) throws IllegalExpressionException {
+        if (StringUtils.isEmpty(code))
+            throw new IllegalArgumentException("unexpected EOF while reading");
+
+        return parse(tokenize(code), null);
+    }
+
+    private static LinkedList<String> tokenize(String text) {
         assert StringUtils.isNotEmpty(text);
 
-        List<String> tokens = new LinkedList<>();
+        LinkedList<String> tokens = new LinkedList<>();
         StringTokenizer tokenizer = new StringTokenizer(text.replace(START_TOKEN, START_TOKEN_REPLACED)
                 .replace(END_TOKEN, END_TOKEN_REPLACED));
         while (tokenizer.hasMoreTokens())
@@ -30,28 +71,31 @@ public class SParser {
         return tokens;
     }
 
-    public static SExpression parse(String code) throws IllegalExpressionException {
-        if (StringUtils.isEmpty(code))
-            throw new IllegalArgumentException("unexpected EOF while reading");
 
-        SExpression program = new SExpression("", null);
-        SExpression current = program;
-        for (String lex : tokenize(code)) {
-            if (START_TOKEN.equals(lex)) {
-                SExpression newNode = new SExpression("", current);
-                current.getChildren().add(newNode);
-                current = newNode;
-            } else if (lex.equals(END_TOKEN)) {
-                if (current.getParent() == null)
-                    throw new IllegalExpressionException("unexpected )");
+    private static SExpression parse(LinkedList<String> tokens, SExpression parent)
+            throws IllegalExpressionException {
+        assert (tokens != null);
 
-                current = current.getParent();
-            } else {
-                current.getChildren().add(new SExpression(lex, current));
+        if (tokens.isEmpty())
+            throw new IllegalExpressionException("unexpected EOF while reading");
+
+        String lex = tokens.pop();
+        SExpression expression;
+        if (START_TOKEN.equals(lex)) {
+            expression = new SExpression("", parent);
+            // add child expression
+            while (!END_TOKEN.equals(tokens.getFirst())) {
+                expression.getChildren().add(parse(tokens, parent));
             }
-        }
 
-        return program.getChildren().get(0);
+            if (tokens.isEmpty())
+                throw new IllegalExpressionException("not balanced parenthesis");
+            tokens.pop(); // pop off ')'
+        } else if (END_TOKEN.equals(lex))
+            throw new IllegalExpressionException("unexpected )");
+        else
+            expression = new SExpression(lex, parent); // self-evaluate expression, like numbers, variables etc.
+
+        return expression;
     }
-
 }
