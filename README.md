@@ -22,7 +22,7 @@ More details can be found here [元求值器](https://klose911.github.io/html/in
 git clone https://github.com/klose911/mscheme.git
 cd mscheme
 mvn clean package
-java -jar target/mscheme-*.jar
+java -jar target/mscheme-exec.jar
 ```
 
 ## Features

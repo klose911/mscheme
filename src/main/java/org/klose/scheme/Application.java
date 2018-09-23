@@ -54,7 +54,7 @@ public class Application {
             future.cancel(true);
             System.out.println();
             System.out.println();
-            System.out.println("Have Fun, Bye Bye... ");
+            System.out.println("Moriturus te saluto.");
         }));
     }
 }
