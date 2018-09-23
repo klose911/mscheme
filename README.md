@@ -4,9 +4,10 @@ My first toy scheme intepreter written by java
 ## Concepts
 
 ### S-expression
-mscheme use[S-expression](https://en.wikipedia.org/wiki/S-expression) to represent [AST](https://en.wikipedia.org/wiki/Abstract_syntax_tree) like any other Scheme
+mscheme use [S-expression] (https://en.wikipedia.org/wiki/S-expression) to represent [AST](https://en.wikipedia.org/wiki/Abstract_syntax_tree) 
 
 For exampple, the `Sexpression` of `(+ 1 2 (* 3 4))` behind `SExpression.java` : 
+
 ![AST_demo](http://upload.wikimedia.org/wikipedia/commons/thumb/1/11/S-expression_tree.svg/220px-S-expression_tree.svg.png)
 
 ### eval-apply cycle
@@ -14,8 +15,7 @@ eval-apply cycle is described in [SICP 4.1](https://mitpress.mit.edu/sicp/full-t
 
 ![eval-apply cycle](https://klose911.github.io/html/intepreter/pic/eval-apply.gif)
 
-More explanations can be found [元求值器](https://klose911.github.io/html/intepreter/meta_evalutor.html)
-
+More details can be found here [元求值器](https://klose911.github.io/html/intepreter/meta_evalutor.html)
 
 ## Install
 ```shell
@@ -34,12 +34,14 @@ java -jar target/mscheme-*.jar
 - `pair`
 - `list`
 - `procedure`
+
 2. special form
-- `if`
+- `quote`
 - `define`
-- `assign`
-- `lambda`
 - `set!`
+- `if`
+- `lambda`
+
 3. primitive procedures
 - `bool`: `and`, `or`, `not`, `eq`
 - `number`: `+`, `-`, `*`, `/`, `>`, `<`, `=`
