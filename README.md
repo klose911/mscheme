@@ -11,7 +11,7 @@ For exampple, the `Sexpression` of `(* 2 (+ 3 4))` behind `SExpression.java` can
 ![AST_demo](http://upload.wikimedia.org/wikipedia/commons/thumb/1/11/S-expression_tree.svg/220px-S-expression_tree.svg.png)
 
 ### eval-apply cycle
-eval-apply cycle is described in [SICP 4.1](https://mitpress.mit.edu/sicp/full-text/book/book-Z-H-26.html#%_sec_4.1.1)
+eval-apply cycle is described in [SICP 4.1](https://mitpress.mit.edu/sites/default/files/sicp/full-text/book/book-Z-H-26.html#%_sec_4.1)
 
 ![eval-apply cycle](https://klose911.github.io/html/intepreter/pic/eval-apply.gif)
 
@@ -54,6 +54,7 @@ java -jar target/mscheme-exec.jar
 4. support syntax `macros` 
 
 ## Known Issues
+1. arithmetic overflow problem  
 1. input with `newline` character will not be treated as a single expression
 2. `lambda` expression must be used to define procedure, like `(define add (lambda (x y) (+ x y))`.  
    The format of `(define (add x y)  (+ x y))` should be supported 
