@@ -54,6 +54,7 @@ java -jar target/mscheme-exec.jar
 4. support syntax `macros` 
 
 ## Known Issues
+1. arithmetic overflow problem  
 1. input with `newline` character will not be treated as a single expression
 2. `lambda` expression must be used to define procedure, like `(define add (lambda (x y) (+ x y))`.  
    The format of `(define (add x y)  (+ x y))` should be supported 
