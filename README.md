@@ -41,20 +41,21 @@ java -jar target/mscheme-exec.jar
 - `set!`
 - `if`
 - `lambda`
+- `begin`
 
 3. primitive procedures
 - `number`: `+`, `-`, `*`, `/`, `>`, `<`, `=`
 - `pair/list`: `cons`, `car`, `cdr`, `list`, `null?`
 - `bool`: `and`, `or`, `not`, `eq`
+- `other`: `apply`
 
 ## TODO
-1. support `begin` expressions
+1. ~~support `begin` expressions~~
 2. support `cond` expressions 
-3. support `continuation` mechanism
-4. support syntax `macros` 
+2. support `continuation` mechanism
+3. support syntax `macros` 
 
 ## Known Issues
 1. arithmetic overflow problem  
-1. input with `newline` character will not be treated as a single expression
-2. `lambda` expression must be used to define procedure, like `(define add (lambda (x y) (+ x y))`.  
-   The format of `(define (add x y)  (+ x y))` should be supported 
+2. input with `newline` character will not be treated as a single expression
+3. ~~`lambda` expression must be used to define procedure, like `(define add (lambda (x y) (+ x y))`. The format of `(define (add x y)  (+ x y))` should be supported~~ 
