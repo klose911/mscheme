@@ -57,5 +57,6 @@ java -jar target/mscheme-exec.jar
 
 ## Known Issues
 1. arithmetic overflow problem  
-2. input with `newline` character will not be treated as a single expression
-3. ~~`lambda` expression must be used to define procedure, like `(define add (lambda (x y) (+ x y))`. The format of `(define (add x y)  (+ x y))` should be supported~~ 
+2. ~~input with `newline` character will not be treated as a single expression~~
+3. ~~`lambda` expression must be used to define procedure, like `(define add (lambda (x y) (+ x y))`~~
+   ~~The format of `(define (add x y)  (+ x y))` should be supported~~
