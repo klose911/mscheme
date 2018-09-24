@@ -1,8 +1,8 @@
 package org.klose.scheme.utils;
 
 import org.klose.scheme.model.SFrame;
-import org.klose.scheme.type.SPrimitive;
 import org.klose.scheme.type.SObject;
+import org.klose.scheme.type.SPrimitive;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -38,11 +38,14 @@ public class InitEnv {
         builtinMap.put(OR, new SPrimitive("org.klose.scheme.primitive.BooleanFunc.or"));
         builtinMap.put(NOT, new SPrimitive("org.klose.scheme.primitive.BooleanFunc.not"));
         builtinMap.put(EQUALS, new SPrimitive("org.klose.scheme.primitive.BooleanFunc.equalsTo"));
+
+        builtinMap.put(APPLY, new SPrimitive("org.klose.scheme.primitive.ApplyFunc.apply"));
     }
 
     /**
      * initialize root environment with primitive functions
      * and literals(<code>true</>, <code>false</>, <code>nil</code>)
+     *
      * @return initialized root environment
      */
     public static SFrame init() {

@@ -1,10 +1,12 @@
 package org.klose.scheme.service;
 
+import junit.framework.Assert;
 import org.junit.Test;
+import org.klose.scheme.constant.SConstant;
 import org.klose.scheme.exception.IllegalExpressionException;
 import org.klose.scheme.exception.WrongArgumentNumberException;
-import org.klose.scheme.model.SFrame;
 import org.klose.scheme.model.SExpression;
+import org.klose.scheme.model.SFrame;
 import org.klose.scheme.model.SProcedure;
 import org.klose.scheme.type.*;
 import org.klose.scheme.utils.SParser;
@@ -56,7 +58,7 @@ public class EvalServiceTest {
     public void stringValue() throws IllegalExpressionException, WrongArgumentNumberException {
         String s = "hello 'world'\n";
         SExpression e = new SExpression("\"" + s + "\"", null);
-        SObject o = eval(e, new SFrame(new HashMap<>(),null));
+        SObject o = eval(e, new SFrame(new HashMap<>(), null));
         assertTrue(o instanceof SString);
         assertEquals(s, o.getValue());
     }
@@ -114,6 +116,20 @@ public class EvalServiceTest {
         assertTrue(o instanceof SString);
         assertEquals("ok", o.getValue());
         assertEquals(100, (env.lookup("a")).getValue());
+    }
+
+    @Test
+    public void evalDefineProcedure() throws IllegalExpressionException, WrongArgumentNumberException {
+        SFrame env = new SFrame(new HashMap<>(), null);
+        SExpression exp = SParser.parse("(define (add x y) (+ x y))");
+        SObject o = eval(exp, env);
+        assertTrue(o instanceof SString);
+        assertEquals("ok", o.getValue());
+
+        SProcedure procedure = (SProcedure) env.lookup("add");
+        Assert.assertEquals("(+ x y)", procedure.getBody().toString());
+        Assert.assertEquals("x", procedure.getParameters().get(0));
+        Assert.assertEquals("y", procedure.getParameters().get(1));
     }
 
     @Test
@@ -178,5 +194,24 @@ public class EvalServiceTest {
         assertEquals("y", procedure.getParameters().get(1));
         assertEquals(SParser.parse("(* x y)").toString(), procedure.getBody().toString());
         assertEquals(env, procedure.getEnvironment());
+    }
+
+    @Test
+    public void evalSequence() throws IllegalExpressionException, WrongArgumentNumberException {
+        SFrame env = new SFrame(new HashMap<>(), null);
+        env.define("+", new SPrimitive("org.klose.scheme.primitive.AddFunc.add"));
+        env.define("false", SConstant.FALSE);
+        SExpression exp = SParser.parse("(begin false (+ 1 2))");
+        SObject result = EvalService.eval(exp, env);
+        Assert.assertEquals(3, result.getValue());
+    }
+
+    @Test
+    public void evalSequenceWithAssign() throws IllegalExpressionException, WrongArgumentNumberException {
+        SFrame env = new SFrame(new HashMap<>(), null);
+        env.define("+", new SPrimitive("org.klose.scheme.primitive.AddFunc.add"));
+        SExpression exp =SParser.parse("(begin (define a 1) (set! a 2) a)");
+        SObject result = EvalService.eval(exp, env);
+        Assert.assertEquals(2, result.getValue());
     }
 }

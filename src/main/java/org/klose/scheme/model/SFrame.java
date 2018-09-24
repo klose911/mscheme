@@ -34,7 +34,7 @@ public class SFrame {
         else if (parent != null)
             return parent.lookup(var);
         else
-            throw new RuntimeException("not found variable");
+            throw new RuntimeException("not found variable " + var);
     }
 
     public void define(String var, SObject val) {
@@ -48,7 +48,7 @@ public class SFrame {
             if (parent != null)
                 parent.assign(var, val);
             else
-                throw new RuntimeException("not found assigned variable");
+                throw new RuntimeException("not found assigned variable " + var);
         }
     }
 

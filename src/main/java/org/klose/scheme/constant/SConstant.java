@@ -30,9 +30,13 @@ public class SConstant {
     public static final String NULL = "null?";
     // string functions
     public static final String EQUALS = "equals";
+    //other func
+    public static final String APPLY = "apply";
 
     // primitive literals
     public static final String NIL_SYMBOL = "nil";
     public static final String TRUE_SYMBOL = "true";
     public static final String FALSE_SYMBOL = "false";
+
+
 }

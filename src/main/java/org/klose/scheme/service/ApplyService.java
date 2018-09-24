@@ -19,23 +19,23 @@ import java.util.Optional;
 
 /**
  * Apply takes two arguments, a procedure and a list of arguments to which the procedure should be applied.
- *
+ * <p>
  * Apply classifies procedures into two kinds:
  * 1. primitive: implemented directly by Java Code and called by Java Reflection
  * 2. compound: defined by lambda expression and sequentially evaluate the body expressions
  */
-class ApplyService {
+public class ApplyService {
 
-    static SObject apply(SProcedure procedure, SObject[] arguments)
+    public static SObject apply(SProcedure procedure, SObject[] arguments)
             throws IllegalExpressionException, WrongArgumentNumberException {
         if (procedure == null)
             throw new IllegalArgumentException("procedure can not be null");
         if (arguments == null)
             throw new IllegalArgumentException("arguments can not be null");
 
-        if (procedure.isPrimitive()) {
+        if (procedure.isPrimitive())
             return primitiveApply((SPrimitive) procedure, arguments);
-        } else
+        else
             return compoundApply(procedure, arguments);
     }
 
@@ -104,5 +104,9 @@ class ApplyService {
         SFrame extendedEnv = procedure.getEnvironment().extend(vars);
 
         return EvalService.eval(procedure.getBody(), extendedEnv);
+    }
+
+    private ApplyService() {
+        throw new UnsupportedOperationException("constructor of ApplyService");
     }
 }

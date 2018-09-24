@@ -33,7 +33,7 @@ public class ApplyServiceTest {
     }
 
     @Test
-    public void compositeApply() throws IllegalExpressionException, WrongArgumentNumberException {
+    public void compoundApply() throws IllegalExpressionException, WrongArgumentNumberException {
         SFrame environment = InitEnv.init();
         List<String> parameters = new ArrayList<>();
         parameters.add("x");
