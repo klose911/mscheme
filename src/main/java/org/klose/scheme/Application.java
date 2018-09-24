@@ -27,23 +27,36 @@ public class Application {
 
         //repl: loop of read -> eval -> print -> read
         final Runnable repl = () -> {
-            String src;
+            String expression = "";
+            String line;
+            boolean newEval = true;
             while (true) {
-                System.out.print(">> ");
+                if (newEval)
+                    System.out.print(">> ");
+
                 try {
-                    src = console.readLine();
-                    if (!StringUtils.isEmpty(src.trim())) {
-                        SExpression exp = SParser.parse(src);
+                    line = console.readLine();
+                    if (line == null)
+                        System.exit(0);
+
+                    expression = expression + " " + line + " ";
+                    if (inputNotFinished(expression)) {
+                        newEval = false;
+                        continue;
+                    }
+
+                    if (!StringUtils.isEmpty(expression.trim())) {
+                        SExpression exp = SParser.parse(expression);
                         SObject val = EvalService.eval(exp, rootEnv);
-                        if (val != null) {
-                            System.out.println(val);
-                        }
+                        System.out.println(val);
                     } else {
                         System.err.println("empty input !");
                     }
                 } catch (Throwable e) {
                     System.err.println(e.getMessage());
                 }
+                newEval = true;
+                expression = "";
             }
         };
         final Future<?> future = executor.submit(repl);
@@ -56,5 +69,16 @@ public class Application {
             System.out.println();
             System.out.println("Moriturus te saluto.");
         }));
+    }
+
+    private static boolean inputNotFinished(String str) {
+        int startCharCount = 0, endCharCount = 0;
+        for (char c : str.toCharArray()) {
+            if (c == '(')
+                startCharCount++;
+            if (c == ')')
+                endCharCount++;
+        }
+        return startCharCount > endCharCount;
     }
 }

@@ -4,8 +4,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.klose.scheme.exception.IllegalExpressionException;
 import org.klose.scheme.model.SExpression;
 
-import java.util.LinkedList;
-import java.util.StringTokenizer;
+import java.util.*;
 
 /**
  * parse input into several SExpression
@@ -97,5 +96,26 @@ public class SParser {
             expression = new SExpression(lex, parent); // self-evaluate expression, like numbers, variables etc.
 
         return expression;
+    }
+
+    public static void main(String[] args) {
+
+        Scanner input = new Scanner(System.in);
+        List<String> lines = new ArrayList<String>();
+        String lineNew;
+
+        while (input.hasNextLine()) {
+            lineNew = input.nextLine();
+            if (lineNew.isEmpty()) {
+                break;
+            }
+            System.out.println(lineNew);
+            lines.add(lineNew);
+        }
+
+        System.out.println("Content of List<String> lines:");
+        for (String string : lines) {
+            System.out.println(string);
+        }
     }
 }
