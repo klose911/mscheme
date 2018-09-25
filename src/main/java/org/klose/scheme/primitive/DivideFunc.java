@@ -4,11 +4,12 @@ import org.klose.scheme.exception.IllegalExpressionException;
 import org.klose.scheme.exception.WrongArgumentNumberException;
 import org.klose.scheme.exception.WrongArgumentTypeException;
 import org.klose.scheme.type.SNumber;
+import org.klose.scheme.type.SObject;
 import org.klose.scheme.utils.SNumberUtils;
 
 public class DivideFunc {
 
-    public static SNumber divide(SNumber... args)
+    public static SNumber divide(SObject... args)
             throws WrongArgumentNumberException, WrongArgumentTypeException, IllegalExpressionException {
         if (args == null)
             throw new IllegalArgumentException("args can not be null");
