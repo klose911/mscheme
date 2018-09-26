@@ -47,7 +47,7 @@ java -jar target/mscheme-exec.jar
 - `number`: `+`, `-`, `*`, `/`, `>`, `<`, `=`
 - `pair/list`: `cons`, `car`, `cdr`, `list`, `null?`
 - `bool`: `and`, `or`, `not`, `eq`
-- `other`: `apply`
+- `other`: `apply`, `print`
 
 ## TODO
 1. ~~support `begin` expressions~~
@@ -60,3 +60,4 @@ java -jar target/mscheme-exec.jar
 2. ~~input with `newline` character will not be treated as a single expression~~
 3. ~~`lambda` expression must be used to define procedure, like `(define add (lambda (x y) (+ x y))`~~
    ~~The format of `(define (add x y)  (+ x y))` should be supported~~
+4. split error for strings contains empty spaces

@@ -32,6 +32,7 @@ public class SConstant {
     public static final String EQUALS = "equals";
     //other func
     public static final String APPLY = "apply";
+    public static final String PRINT = "print";
 
     // primitive literals
     public static final String NIL_SYMBOL = "nil";

@@ -39,7 +39,9 @@ public class InitEnv {
         builtinMap.put(NOT, new SPrimitive("org.klose.scheme.primitive.BooleanFunc.not"));
         builtinMap.put(EQUALS, new SPrimitive("org.klose.scheme.primitive.BooleanFunc.equalsTo"));
 
+        //other
         builtinMap.put(APPLY, new SPrimitive("org.klose.scheme.primitive.ApplyFunc.apply"));
+        builtinMap.put(PRINT, new SPrimitive("org.klose.scheme.primitive.PrintFunc.print"));
     }
 
     /**
