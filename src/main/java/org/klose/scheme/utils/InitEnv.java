@@ -39,7 +39,9 @@ public class InitEnv {
         builtinMap.put(NOT, new SPrimitive("org.klose.scheme.primitive.BooleanFunc.not"));
         builtinMap.put(EQUALS, new SPrimitive("org.klose.scheme.primitive.BooleanFunc.equalsTo"));
 
+        //other
         builtinMap.put(APPLY, new SPrimitive("org.klose.scheme.primitive.ApplyFunc.apply"));
+        builtinMap.put(PRINT, new SPrimitive("org.klose.scheme.primitive.PrintFunc.print"));
     }
 
     /**
@@ -50,5 +52,9 @@ public class InitEnv {
      */
     public static SFrame init() {
         return new SFrame(builtinMap, null);
+    }
+
+    private InitEnv() {
+        throw new UnsupportedOperationException("illegal constructor for InitEnv");
     }
 }

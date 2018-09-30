@@ -33,4 +33,8 @@ public class DivideFunc {
         }
         return new SNumber(result);
     }
+
+    private DivideFunc() {
+        throw new UnsupportedOperationException("illegal constructor for DivedeFunc");
+    }
 }

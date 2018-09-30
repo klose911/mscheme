@@ -57,4 +57,7 @@ public class PairFunc {
         return pair.getCdr();
     }
 
+    private PairFunc() {
+        throw new UnsupportedOperationException("illegal operator for PairFunc");
+    }
 }

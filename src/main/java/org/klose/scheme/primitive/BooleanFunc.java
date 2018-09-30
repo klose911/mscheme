@@ -77,4 +77,7 @@ public class BooleanFunc {
         return new SBoolean(args[0].getValue().equals(args[1].getValue()));
     }
 
+    private BooleanFunc() {
+        throw new UnsupportedOperationException("illegal constructor for BooleanFunc");
+    }
 }

@@ -73,4 +73,8 @@ public class AddFunc {
 
         return result;
     }
+
+    private AddFunc() {
+        throw new UnsupportedOperationException("illegal constructor for AddFunc");
+    }
 }

@@ -50,4 +50,7 @@ public class ListFunc {
         return new SObject[0];
     }
 
+    private ListFunc() {
+        throw new UnsupportedOperationException("illegal constructor for ListFunc");
+    }
 }

@@ -107,6 +107,6 @@ public class ApplyService {
     }
 
     private ApplyService() {
-        throw new UnsupportedOperationException("constructor of ApplyService");
+        throw new UnsupportedOperationException("illegal constructor for ApplyService");
     }
 }

@@ -28,4 +28,8 @@ public class ApplyFunc {
 
         return ApplyService.apply(procedure, arguments);
     }
+
+    private ApplyFunc() {
+        throw new UnsupportedOperationException("illegal constructor for Apply Func");
+    }
 }

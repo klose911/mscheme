@@ -74,4 +74,8 @@ public class CompareFunc {
         return new SBoolean(((Number) arg0.getValue()).doubleValue() ==
                 ((Number) arg1.getValue()).doubleValue());
     }
+
+    private CompareFunc() {
+        throw new UnsupportedOperationException("illegal constructor for ComapreFunc");
+    }
 }

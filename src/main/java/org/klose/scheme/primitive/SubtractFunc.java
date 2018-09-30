@@ -73,4 +73,8 @@ public class SubtractFunc {
 
         return result;
     }
+
+    private SubtractFunc() {
+        throw new UnsupportedOperationException("illeagl constructor for SubtractFunc");
+    }
 }
