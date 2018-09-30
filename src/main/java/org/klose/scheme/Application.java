@@ -81,4 +81,8 @@ public class Application {
         }
         return startCharCount > endCharCount;
     }
+
+    private Application() {
+        throw new UnsupportedOperationException("illegal constructor for Application class");
+    }
 }

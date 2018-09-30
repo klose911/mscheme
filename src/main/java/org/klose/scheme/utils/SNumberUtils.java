@@ -41,6 +41,7 @@ public class SNumberUtils {
 
     /**
      * downcast a SObject array into SNumber array
+     *
      * @param args Sobject array
      * @return downcasted SNumber array
      * @throws WrongArgumentTypeException if args contains an element which can not be downcasted to SNumber
@@ -60,5 +61,9 @@ public class SNumberUtils {
             a[i] = (SNumber) args[i];
         }
         return a;
+    }
+
+    private SNumberUtils() {
+        throw new UnsupportedOperationException("illegal constructor for SNUmberUtils");
     }
 }

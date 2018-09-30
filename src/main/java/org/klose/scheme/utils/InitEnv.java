@@ -51,4 +51,8 @@ public class InitEnv {
     public static SFrame init() {
         return new SFrame(builtinMap, null);
     }
+
+    private InitEnv() {
+        throw new UnsupportedOperationException("illegal constructor for InitEnv");
+    }
 }

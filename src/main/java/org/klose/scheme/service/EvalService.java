@@ -2,15 +2,20 @@ package org.klose.scheme.service;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
+import org.klose.scheme.constant.SConstant;
 import org.klose.scheme.exception.IllegalExpressionException;
 import org.klose.scheme.exception.WrongArgumentNumberException;
 import org.klose.scheme.model.SExpression;
 import org.klose.scheme.model.SFrame;
 import org.klose.scheme.model.SProcedure;
+import org.klose.scheme.type.SBoolean;
 import org.klose.scheme.type.SNumber;
 import org.klose.scheme.type.SObject;
 import org.klose.scheme.type.SString;
 import org.klose.scheme.utils.EvalUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Eval takes as arguments an expression and an environment and return evaluation value.
@@ -18,6 +23,9 @@ import org.klose.scheme.utils.EvalUtils;
  * eg. eval("(+ 1 2)" env) will return 3
  */
 public class EvalService {
+    private EvalService() {
+        throw new UnsupportedOperationException("illegal constructor for EvalService");
+    }
 
     public static SObject eval(SExpression exp, SFrame env)
             throws IllegalExpressionException, WrongArgumentNumberException {
@@ -86,4 +94,202 @@ public class EvalService {
 
         return operands;
     }
+
+    static class AssignService {
+        private AssignService() {
+            throw new UnsupportedOperationException("illegal constructor for AssignService");
+        }
+
+        static SString evalAssign(SExpression exp, SFrame env)
+                throws IllegalExpressionException, WrongArgumentNumberException {
+            if (exp == null)
+                throw new IllegalArgumentException("expression of evalAssign can not be null");
+            if (env == null)
+                throw new IllegalArgumentException("environment of evalAssign can not be null");
+
+            if (exp.getChildren().size() != 3)
+                throw new WrongArgumentNumberException(3, exp.getChildren().size(), "evalAssign");
+
+            String var = exp.getChildren().get(1).getValue();
+            SObject value = EvalService.eval(exp.getChildren().get(2), env);
+            //modify the binding of a variable under the environment
+            env.assign(var, value);
+            return new SString("ok");
+        }
+    }
+
+    static class ConditionService {
+        private ConditionService() {
+            throw new UnsupportedOperationException("illegal constructor for ConditionService");
+        }
+
+        static SObject evalIf(SExpression exp, SFrame env)
+                throws IllegalExpressionException, WrongArgumentNumberException {
+            if (exp == null)
+                throw new IllegalArgumentException("expression of evalIf can not be null");
+            if (env == null)
+                throw new IllegalArgumentException("environment of evalIf can not be null");
+
+            if (exp.getChildren().size() < 3)
+                throw new WrongArgumentNumberException(3, exp.getChildren().size(), "evalIf");
+
+            // evaluate the predicate expression
+            SExpression predicate = exp.getChildren().get(1);
+            SBoolean check = (SBoolean) EvalService.eval(predicate, env);
+            if (check.getValue()) {
+                //evaluate the consequent if the predicate is true
+                SExpression consequent = exp.getChildren().get(2);
+                return EvalService.eval(consequent, env);
+            } else {
+                //if alternative available, evaluate the alternative
+                if (exp.getChildren().size() == 4) {
+                    SExpression alternative = exp.getChildren().get(3);
+                    return EvalService.eval(alternative, env);
+                } else
+                    //if alternative misses, directly return false
+                    return new SBoolean(false);
+            }
+        }
+    }
+
+    static class QuoteService {
+        static SObject evalQuote(SExpression exp) throws WrongArgumentNumberException {
+            if (exp == null)
+                throw new IllegalArgumentException("expression of evalQuote can not be null");
+
+            if (exp.getChildren().size() != 2)
+                throw new WrongArgumentNumberException(2, exp.getChildren().size(), "quote");
+
+            //returns the expression that was quoted
+            return exp.getChildren().get(1);
+        }
+
+        private QuoteService() {
+            throw new UnsupportedOperationException("illegal constructor for QuoteService");
+        }
+    }
+
+    static class SequenceService {
+        static SObject evalSequence(SExpression exp, SFrame env)
+                throws IllegalExpressionException, WrongArgumentNumberException {
+            if (exp == null)
+                throw new IllegalArgumentException("expression of evalSequence can not be null");
+            if (env == null)
+                throw new IllegalArgumentException("environment of evalSequence can not be null");
+
+            if (exp.getChildren().size() < 2)
+                throw new WrongArgumentNumberException(2, exp.getChildren().size(), "evalSequence");
+
+            SObject result = SConstant.NIL;
+            List<SExpression> children = exp.getChildren();
+            for (int i = 1; i < children.size(); i++)
+                result = EvalService.eval(children.get(i), env);
+
+            return result;
+        }
+
+        private SequenceService() {
+            throw new UnsupportedOperationException("illegal constructor for SequenceService");
+        }
+    }
+
+    static class LambdaService {
+        static SProcedure evalLambda(SExpression exp, SFrame env) throws WrongArgumentNumberException {
+            if (exp == null)
+                throw new IllegalArgumentException("expression of evalLambda can not be null");
+            if (env == null)
+                throw new IllegalArgumentException("environment of evalLambda can not be null");
+
+            if (exp.getChildren().size() != 3)
+                throw new WrongArgumentNumberException(3, exp.getChildren().size(), "evalLambda");
+
+            // transformed into an applicable procedure by packaging together the parameters
+            // and body specified by the lambda expression with the environment of the evaluation
+            SExpression body = exp.getChildren().get(2);
+            SExpression parametersExp = exp.getChildren().get(1);
+            List<String> parameters = new ArrayList<>();
+            for (SExpression p : parametersExp.getChildren())
+                parameters.add(p.getValue());
+
+
+            return new SProcedure(body, parameters, env);
+        }
+
+        private LambdaService() {
+            throw new UnsupportedOperationException("illegal constructor for LambdaService");
+        }
+    }
+
+    static class DefineService {
+        static SString evalDefine(SExpression exp, SFrame env)
+                throws IllegalExpressionException, WrongArgumentNumberException {
+            if (exp == null)
+                throw new IllegalArgumentException("expression of evalDefine can not be null");
+            if (env == null)
+                throw new IllegalArgumentException("environment of evalDefine can not be null");
+
+            if (exp.getChildren().size() != 3)
+                throw new WrongArgumentNumberException(3, exp.getChildren().size(), "evalDefine");
+
+            env.define(getDefinitionVariable(exp), getDefinitionValue(exp, env));
+            return new SString("ok");
+        }
+
+
+        private static String getDefinitionVariable(SExpression exp)
+                throws IllegalExpressionException {
+            assert (exp != null);
+            assert (exp.getChildren() != null);
+            assert (exp.getChildren().size() == 3);
+
+            SExpression variableExpression = exp.getChildren().get(1);
+            if (variableExpression.isSelfEval())
+                return variableExpression.getValue();
+            else {
+                List<SExpression> variableList = variableExpression.getChildren();
+                if (variableList.isEmpty())
+                    throw new IllegalExpressionException("variable list of define can not be empty");
+
+                return variableList.get(0).getValue();
+            }
+        }
+
+        private static SObject getDefinitionValue(SExpression exp, SFrame env)
+                throws IllegalExpressionException, WrongArgumentNumberException {
+            assert (exp != null);
+            assert (exp.getChildren() != null);
+            assert (exp.getChildren().size() == 3);
+            assert (env != null);
+
+            SExpression variableExpression = exp.getChildren().get(1);
+            SExpression valueExpression = exp.getChildren().get(2);
+
+            if (variableExpression.isSelfEval())
+                return EvalService.eval(valueExpression, env);
+            else {
+                List<SExpression> variableList = variableExpression.getChildren();
+                if (variableList.isEmpty())
+                    throw new IllegalExpressionException("variable list of define can not be empty");
+
+                return new SProcedure(valueExpression,
+                        getProcedureParameters(variableList), env);
+            }
+        }
+
+        private static List<String> getProcedureParameters(List<SExpression> variableList) {
+            assert (variableList != null);
+            assert (!variableList.isEmpty());
+
+            List<String> params = new ArrayList<>();
+            for (int i = 1; i < variableList.size(); i++)
+                params.add(variableList.get(i).getValue());
+
+            return params;
+        }
+
+        private DefineService() {
+            throw new UnsupportedOperationException("illegal constructor for DefineService");
+        }
+    }
+
 }

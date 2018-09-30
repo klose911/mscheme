@@ -6,6 +6,7 @@ public class EvalUtils {
 
     /**
      * Checks whether the Input is a valid Java String literal
+     *
      * @param str the Input to check
      * @return true if the Input is a valid Java String literal
      */
@@ -18,10 +19,15 @@ public class EvalUtils {
 
     /**
      * Checks whether the String a valid number
+     *
      * @param str the String to check
      * @return true if the string is a correctly formatted number
      */
     public static boolean isNumber(String str) {
         return NumberUtils.isNumber(str);
+    }
+
+    private EvalUtils() {
+        throw new UnsupportedOperationException("illegal constructor for EvalUtils");
     }
 }

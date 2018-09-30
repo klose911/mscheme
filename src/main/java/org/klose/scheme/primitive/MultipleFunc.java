@@ -72,4 +72,8 @@ public class MultipleFunc {
 
         return result;
     }
+
+    private MultipleFunc() {
+        throw new UnsupportedOperationException("illegal constructor for MultipleFunc");
+    }
 }
