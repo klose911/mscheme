@@ -85,7 +85,7 @@ public class SParser {
     String token;
     while (port.hasNext()) {
       token = port.next();
-      if (!token.isEmpty() && !SPort.EOF.equals(token))
+      if (!token.isEmpty())
         tokens.add(token);
     }
 

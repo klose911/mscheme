@@ -1,7 +1,6 @@
 package org.klose.scheme;
 
 import org.apache.commons.lang3.StringUtils;
-import org.klose.scheme.io.SPort;
 import org.klose.scheme.model.SExpression;
 import org.klose.scheme.model.SFrame;
 import org.klose.scheme.service.EvalService;
@@ -20,69 +19,47 @@ import java.util.concurrent.Future;
  */
 public class Application {
 
-  public static void main(String[] args) {
-    ExecutorService executor = Executors.newSingleThreadExecutor();
-    BufferedReader console = new BufferedReader(new InputStreamReader(System.in));
-    SFrame rootEnv = InitEnv.init();
+    public static void main(String[] args) {
+        SFrame rootEnv = InitEnv.init();
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        BufferedReader console = new BufferedReader(new InputStreamReader(System.in));
 
-    //repl: loop of read -> eval -> print -> read
-    final Runnable repl = () -> {
-      String expression = "";
-      String line;
-      boolean newEval = true;
-      while (true) {
-        if (newEval)
-          System.out.print(">> ");
+        //repl: loop of read -> eval -> print -> read
+        final Runnable repl = () -> {
+            String src;
+            while (true) {
+              System.out.println("scheme>>");
+                try {
+                    src = console.readLine();
+                    if (src == null)
+                        break;
 
-        try {
-          line = console.readLine();
-          if (line == null)
-            System.exit(0);
+                    if (!StringUtils.isEmpty(src.trim())) {
+                        SExpression exp = SParser.parse(src);
+                        SObject val = EvalService.eval(exp, rootEnv);
+                        System.out.println(val);
+                    } else {
+                        System.err.println("empty input !");
+                    }
+                } catch (Throwable e) {
+                    e.printStackTrace();
+                }
+            }
+        };
 
-          expression = expression + " " + line + " ";
-          if (inputNotFinished(expression)) {
-            newEval = false;
-            continue;
-          }
-
-          if (!StringUtils.isEmpty(expression.trim())) {
-            SExpression exp = SParser.parse(new SPort(expression));
-            SObject val = EvalService.eval(exp, rootEnv);
-            System.out.println(val);
-          } else {
-            System.err.println("empty input !");
-          }
-        } catch (Throwable e) {
-          System.err.println(e.getMessage());
-        }
-        newEval = true;
-        expression = "";
-      }
-    };
-    final Future<?> future = executor.submit(repl);
-
-    // gracefully shutdown jvm
-    Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-      //shutdown repl thread
-      future.cancel(true);
-      System.out.println();
-      System.out.println();
-      System.out.println("Moriturus te saluto.");
-    }));
-  }
-
-  private static boolean inputNotFinished(String str) {
-    int startCharCount = 0, endCharCount = 0;
-    for (char c : str.toCharArray()) {
-      if (c == '(')
-        startCharCount++;
-      if (c == ')')
-        endCharCount++;
+        final Future<?> future = executor.submit(repl);
+        // gracefully shutdown jvm
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            //shutdown repl thread
+            future.cancel(true);
+            System.out.println();
+            System.out.println();
+            System.out.println("Moriturus te saluto.");
+        }));
     }
-    return startCharCount > endCharCount;
-  }
 
-  private Application() {
-    throw new UnsupportedOperationException("illegal constructor for Application class");
-  }
+    private Application() {
+        throw new UnsupportedOperationException("illegal constructor for Application class");
+    }
 }
+

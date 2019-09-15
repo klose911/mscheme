@@ -60,7 +60,12 @@ public class SPort implements Iterator<String> {
       // reach the end of stream
       if (line == null) {
         line = "";
-        reader = null;
+        try {
+          reader.close();
+          reader = null;
+        } catch (IOException e) {
+          e.printStackTrace();
+        }
         //TODO implement symbol later
         return EOF;
       }
