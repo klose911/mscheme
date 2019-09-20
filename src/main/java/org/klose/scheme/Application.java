@@ -1,6 +1,6 @@
 package org.klose.scheme;
 
-import org.apache.commons.lang3.StringUtils;
+import org.klose.scheme.io.SPort;
 import org.klose.scheme.model.SExpression;
 import org.klose.scheme.model.SFrame;
 import org.klose.scheme.service.EvalService;
@@ -8,8 +8,6 @@ import org.klose.scheme.type.SObject;
 import org.klose.scheme.utils.InitEnv;
 import org.klose.scheme.utils.SParser;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -22,25 +20,25 @@ public class Application {
     public static void main(String[] args) {
         SFrame rootEnv = InitEnv.init();
         ExecutorService executor = Executors.newSingleThreadExecutor();
-        BufferedReader console = new BufferedReader(new InputStreamReader(System.in));
-
+//        BufferedReader console = new BufferedReader(new InputStreamReader(System.in));
+        SPort port = new SPort(System.in);
         //repl: loop of read -> eval -> print -> read
         final Runnable repl = () -> {
-            String src;
+//            String src;
             while (true) {
-              System.out.println("scheme>>");
+                System.out.println("scheme>>");
                 try {
-                    src = console.readLine();
-                    if (src == null)
-                        break;
+//                    src = console.readLine();
+//                    if (src == null)
+//                        break;
 
-                    if (!StringUtils.isEmpty(src.trim())) {
-                        SExpression exp = SParser.parse(src);
-                        SObject val = EvalService.eval(exp, rootEnv);
-                        System.out.println(val);
-                    } else {
-                        System.err.println("empty input !");
-                    }
+//                    if (!StringUtils.isEmpty(src.trim())) {
+                    SExpression exp = SParser.parse(port);
+                    SObject val = EvalService.eval(exp, rootEnv);
+                    System.out.println(val);
+//                    } else {
+//                        System.err.println("empty input !");
+//                    }
                 } catch (Throwable e) {
                     e.printStackTrace();
                 }

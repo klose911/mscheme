@@ -5,10 +5,7 @@ import org.klose.scheme.exception.IllegalExpressionException;
 import org.klose.scheme.io.SPort;
 import org.klose.scheme.model.SExpression;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Scanner;
 
 /**
  * parse input into several SExpression
@@ -43,104 +40,56 @@ import java.util.Scanner;
  */
 
 public class SParser {
-  private static final String START_TOKEN = "(";
+    /**
+     * parse String into SExpression
+     *
+     * @param code string to parse
+     * @return parsed SExpression
+     * @throws IllegalExpressionException illegal S Expression
+     */
+    public static SExpression parse(String code) throws IllegalExpressionException {
+        if (StringUtils.isEmpty(code))
+            throw new IllegalArgumentException("unexpected EOF while reading");
 
-  private static final String END_TOKEN = ")";
-
-  private static final String COMMENT_TOKEN = ";";
-
-  private static final String STRING_TOKEN = "\"";
-
-  /**
-   * parse String into SExpression
-   *
-   * @param code string to parse
-   * @return parsed SExpression
-   * @throws IllegalExpressionException illegal S Expression
-   */
-  public static SExpression parse(String code) throws IllegalExpressionException {
-    if (StringUtils.isEmpty(code))
-      throw new IllegalArgumentException("unexpected EOF while reading");
-
-    return parse(new SPort(code));
-  }
-
-  /**
-   * parse input into SExpression
-   *
-   * @param port io port
-   * @return parsed SExpression
-   * @throws IllegalExpressionException illegal S Expression
-   */
-  public static SExpression parse(SPort port) throws IllegalExpressionException {
-    if (port == null) {
-      throw new IllegalArgumentException("port is closed ");
+        return parse(new SPort(code));
     }
 
-    return parse(tokenize(port), null);
-  }
+    /**
+     * parse input into SExpression
+     *
+     * @param port io port
+     * @return parsed SExpression
+     * @throws IllegalExpressionException illegal S Expression
+     */
+    public static SExpression parse(SPort port) throws IllegalExpressionException {
+        if (port == null) {
+            throw new IllegalArgumentException("port is closed ");
+        }
 
-  private static LinkedList<String> tokenize(SPort port) {
-    LinkedList<String> tokens = new LinkedList<>();
-    String token;
-    while (port.hasNext()) {
-      token = port.next();
-      if (!token.isEmpty())
-        tokens.add(token);
+        return parse(port.read(), null);
     }
 
-    return tokens;
-  }
-
-  private static SExpression parse(LinkedList<String> tokens, SExpression parent)
-    throws IllegalExpressionException {
-    assert (tokens != null);
-
-    if (tokens.isEmpty())
-      throw new IllegalExpressionException("unexpected EOF while reading");
-
-    String lex = tokens.pop();
-    SExpression expression;
-    if (START_TOKEN.equals(lex)) {
-      expression = new SExpression("", parent);
-      // add child expression
-      while (!END_TOKEN.equals(tokens.getFirst())) {
-        expression.getChildren().add(parse(tokens, parent));
-      }
-
-      if (tokens.isEmpty())
-        throw new IllegalExpressionException("not balanced parenthesis");
-      tokens.pop(); // pop off ')'
-    } else if (END_TOKEN.equals(lex))
-      throw new IllegalExpressionException("unexpected )");
-    else
-      expression = new SExpression(lex, parent); // self-evaluate expression, like numbers, variables etc.
-
-    return expression;
-  }
-
-  public static void main(String[] args) {
-
-    Scanner input = new Scanner(System.in);
-    List<String> lines = new ArrayList<>();
-    String lineNew;
-
-    while (input.hasNextLine()) {
-      lineNew = input.nextLine();
-      if (lineNew.isEmpty()) {
-        break;
-      }
-      System.out.println(lineNew);
-      lines.add(lineNew);
+    private static SExpression parse(Object x, SExpression parent) throws IllegalExpressionException {
+        if (x instanceof String) {
+            return new SExpression((String) x, parent);
+        } else if (x instanceof List) {
+            List<Object> l = (List<Object>) x;
+            SExpression expression = new SExpression("", parent);
+            for (Object o : l) {
+                expression.getChildren().add(parse(o, parent));
+            }
+            return expression;
+        }
+        throw new IllegalExpressionException(" illegal class instance of parsed tokens");
     }
 
-    System.out.println("Content of List<String> lines:");
-    for (String string : lines) {
-      System.out.println(string);
+    public static void main(String[] args) throws IllegalExpressionException {
+      String code = "('define (append x y) \r\n (if (null? x) y (cons (car x) (append (cdr x) y))))";
+      SExpression e = SParser.parse(code);
+      System.out.println(e.toString());
     }
-  }
 
-  private SParser() {
-    throw new UnsupportedOperationException("illegal constructor for SParser");
-  }
+    private SParser() {
+        throw new UnsupportedOperationException("illegal constructor for SParser");
+    }
 }
