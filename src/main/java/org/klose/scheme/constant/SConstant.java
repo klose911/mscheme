@@ -40,6 +40,6 @@ public class SConstant {
     public static final String FALSE_SYMBOL = "false";
 
     private SConstant() {
-        throw new UnsupportedOperationException("illegal constructor for Sconstant");
+        throw new UnsupportedOperationException("illegal constructor for SConstant");
     }
 }
